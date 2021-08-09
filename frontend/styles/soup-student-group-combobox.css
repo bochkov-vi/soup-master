@@ -1,0 +1,15 @@
+#overlay {
+	color: var(--lumo-body-text-color);
+	background: none;
+}
+
+:host {
+	--lumo-text-field-size: 0.5rem;
+}
+
+:host::before {
+	height:unset;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+}

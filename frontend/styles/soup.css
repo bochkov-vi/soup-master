@@ -1,0 +1,609 @@
+html {
+	/*SOUP*/
+	--soup-background-image: url(../img/u31.png);
+	--soup-dark-grey: rgb(51, 51, 51);
+	--soup-dialog-overlay-background: #cccccc;
+	--soup-dialog-overlay-background-dark: #333333;
+	--soup-button-border: rgb(153, 153, 153);
+	--soup-grey: #414141;
+	--soup-light-grey: #cccccc;
+	--soup-text-light-grey: #a4a3a3;
+	--soup-very-light-grey: #ffffff;
+	--soup-top-panel-color: #202020;
+	--soup-dark-blue: #34343b;
+	--soup-left-admin-panel-width: 25%;
+	--soup-admin-info-panel-height: 50px;
+	--soup-valuable-heigth: calc(100vh - 100px);
+	--soup-personal-user-info-border-color: #7979798f;
+	--soup-hover-button-color: #f60;
+	--soup-tutor-navigator-background: rgba(92, 92, 92, 0.51);
+
+	--lumo-size-xs: 1.3rem;
+	--lumo-size-s: 1.625rem;
+	--lumo-size-m: 1.875rem;
+	--lumo-size-l: 2.25rem;
+	--lumo-size-xl: 2.75rem;
+
+	--lumo-space-xs: 0.15rem;
+	--lumo-space-s: 0.25rem;
+	--lumo-space-m: 0.5rem;
+	--lumo-space-l: 1rem;
+	--lumo-space-xl: 1.5rem;
+
+	--lumo-space-wide-xs: calc(0.15rem / 2) 0.15rem;
+	--lumo-space-wide-s: calc(0.25rem / 2) 0.25rem;
+	--lumo-space-wide-m: calc(0.5rem / 2) 0.5rem;
+	--lumo-space-wide-l: calc(1rem / 2) 1rem;
+	--lumo-space-wide-xl: calc(1.5rem / 2) 1.5rem;
+
+	--lumo-space-tall-xs: 0.15rem calc(0.15rem / 2);
+	--lumo-space-tall-s: 0.25rem calc(0.25rem / 2);
+	--lumo-space-tall-m: 0.5rem calc(0.5rem / 2);
+	--lumo-space-tall-l: 1rem calc(1rem / 2);
+	--lumo-space-tall-xl: 1.5rem calc(1.5rem / 2);
+
+	--lumo-border-radius-m: 5px;
+	--lumo-border-radius-s: 2px;
+	--lumo-border-radius: 5px;
+	--lumo-shade-5pct: rgba(61, 61, 61, 0.05);
+	--lumo-shade-10pct: rgba(61, 61, 61, 0.1);
+	--lumo-shade-20pct: rgba(61, 61, 61, 0.2);
+	--lumo-shade-30pct: rgba(61, 61, 61, 0.3);
+	--lumo-shade-40pct: rgba(61, 61, 61, 0.4);
+	--lumo-shade-50pct: rgba(61, 61, 61, 0.5);
+	--lumo-shade-60pct: rgba(61, 61, 61, 0.6);
+	--lumo-shade-70pct: rgba(61, 61, 61, 0.7);
+	--lumo-shade-80pct: rgba(61, 61, 61, 0.8);
+	--lumo-shade-90pct: rgba(61, 61, 61, 0.9);
+	--lumo-primary-text-color: rgb(235, 89, 5);
+	--lumo-primary-color-50pct: rgba(235, 89, 5, 0.5);
+	--lumo-primary-color-10pct: rgba(235, 89, 5, 0.1);
+	--lumo-error-text-color: rgb(231, 24, 24);
+	--lumo-error-color-50pct: rgba(231, 24, 24, 0.5);
+	--lumo-error-color-10pct: rgba(231, 24, 24, 0.1);
+	--lumo-success-text-color: rgb(62, 229, 170);
+	--lumo-success-color-50pct: rgba(62, 229, 170, 0.5);
+	--lumo-success-color-10pct: rgba(62, 229, 170, 0.1);
+	--lumo-shade: hsl(0, 0%, 24%);
+	--lumo-primary-color: hsl(22, 96%, 47%);
+	--lumo-error-color: hsl(0, 81%, 50%);
+	--lumo-success-color: hsl(159, 76%, 57%);
+	--lumo-success-contrast-color: hsl(159, 29%, 10%);
+	background-color: var(--soup-dark-grey); /*workaround мерцание белого фона*/
+}
+
+[theme~="dark"] {
+	--lumo-base-color: var(--soup-dark-grey);
+	--lumo-shade-5pct: rgba(79, 79, 79, 0.05);
+	--lumo-shade-10pct: rgba(79, 79, 79, 0.1);
+	--lumo-shade-20pct: rgba(79, 79, 79, 0.2);
+	--lumo-shade-30pct: rgba(79, 79, 79, 0.3);
+	--lumo-shade-40pct: rgba(79, 79, 79, 0.4);
+	--lumo-shade-50pct: rgba(79, 79, 79, 0.5);
+	--lumo-shade-60pct: rgba(79, 79, 79, 0.6);
+	--lumo-shade-70pct: rgba(79, 79, 79, 0.7);
+	--lumo-shade-80pct: rgba(79, 79, 79, 0.8);
+	--lumo-shade-90pct: rgba(79, 79, 79, 0.9);
+	--lumo-shade: #4f4f4f;
+	--lumo-tint-5pct: rgba(177, 177, 177, 0.05);
+	--lumo-tint-10pct: rgba(177, 177, 177, 0.1);
+	--lumo-tint-20pct: rgba(177, 177, 177, 0.2);
+	--lumo-tint-30pct: rgba(177, 177, 177, 0.3);
+	--lumo-tint-40pct: rgba(177, 177, 177, 0.4);
+	--lumo-tint-50pct: rgba(177, 177, 177, 0.5);
+	--lumo-tint-60pct: rgba(177, 177, 177, 0.6);
+	--lumo-tint-70pct: rgba(177, 177, 177, 0.7);
+	--lumo-tint-80pct: rgba(177, 177, 177, 0.8);
+	--lumo-tint-90pct: rgba(177, 177, 177, 0.9);
+	--lumo-tint: var(--soup-light-grey);
+	/*--lumo-primary-text-color: rgb(255, 83, 0);*/
+	--lumo-primary-color-50pct: rgba(255, 83, 0, 0.5);
+	--lumo-primary-color-10pct: rgba(255, 83, 0, 0.1);
+	--lumo-primary-color: #ff5300;
+	--lumo-error-text-color: rgb(230, 11, 0);
+	--lumo-error-color-50pct: rgba(230, 11, 0, 0.5);
+	--lumo-error-color-10pct: rgba(230, 11, 0, 0.1);
+	--lumo-error-color: hsl(3, 100%, 45%);
+	--lumo-success-text-color: rgb(1, 152, 64);
+	--lumo-success-color-50pct: rgba(1, 152, 64, 0.5);
+	--lumo-success-color-10pct: rgba(1, 152, 64, 0.1);
+	--lumo-success-color: hsl(145, 99%, 30%);
+	--lumo-primary-text-color: var(--soup-light-grey);
+	--_lumo-button-background-color: var(--soup-dark-grey);
+	--lumo-contrast-5pct: #333333;
+
+}
+
+body {
+	transition: background-image 1s ease-in-out;
+	background: var(--soup-background-image) no-repeat center center fixed;
+	background-size: cover;
+	width: unset;
+	margin: 0;
+	overflow: hidden;
+}
+
+.soup-student-details {
+	margin-left: 10px;
+	padding: 5px;
+	border: solid 1px var(--soup-grey);
+	border-radius: 5px;
+	/*background-color: var(--soup-grey);*/
+	/*--lumo-secondary-text-color: var(--soup-very-light-grey);*/
+}
+
+.soup-simulator-action-layout {
+	background-color: white;
+	overflow: auto;
+	max-height: 23vh;
+	min-height: 200px;
+}
+
+.soup-scenario-description-layout {
+	background-color: rgba(228, 228, 228, 1);
+	border: solid 1px var(--soup-grey);
+	overflow: auto;
+}
+
+.soup-scenario-description-label {
+	background-color: #999999;
+	width: 100%;
+	height: 35px;
+	min-height: 35px;
+	align-items: center;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.soup-link-button {
+	background: linear-gradient(0deg, rgba(204, 204, 204, 1) 0%, rgba(204, 204, 204, 1) 0%, rgba(242, 242, 242, 1) 100%, rgba(242, 242, 242, 1) 100%);
+	height: 40px;
+	--lumo-primary-text-color: var(--soup-dark-grey);
+}
+
+.soup-link-layout {
+	padding-right: 10px;
+	padding-bottom: 10px;
+	margin: 0;
+}
+
+
+.soup-simulator-role-tile {
+	background-color: rgba(228, 228, 228, 1);
+	width: 33%;
+	max-width: 33%;
+	border: solid 1px var(--soup-grey);
+	padding: 0;
+}
+
+.soup-role-name-layout {
+	background-color: #999999;
+	height: 35px;
+	min-height: 35px;
+	align-items: center;
+	padding-left: 10px;
+}
+
+.soup-form-item-grey {
+	width: 40%;
+	border: solid 1px var(--soup-dark-grey);
+	border-radius: 5px;
+	padding-left: 5px;
+	margin-top: 5px;
+	align-items: baseline;
+	background: linear-gradient(0deg, rgba(204, 204, 204, 1) 0%, rgba(204, 204, 204, 1) 0%, rgba(242, 242, 242, 1) 100%, rgba(242, 242, 242, 1) 100%);
+}
+
+.soup-user-name-bar {
+	background-color: var(--soup-dialog-overlay-background-dark);
+	margin: 0;
+	border-bottom: solid 1px var(--soup-grey);
+}
+
+.soup-form-item-button {
+	border: unset;
+	background: linear-gradient(0deg, rgba(204, 204, 204, 1) 0%, rgba(204, 204, 204, 1) 0%, rgba(242, 242, 242, 1) 100%, rgba(242, 242, 242, 1) 100%);
+	--lumo-primary-text-color: rgba(102, 102, 102, 1);
+	padding: 0;
+}
+
+.soup-umm-im-name-label {
+	word-break: break-all;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 140px;
+}
+
+.soup-form-item {
+	--vaadin-form-item-label-width: 15em;
+	margin-top: 5px;
+}
+
+.soup-add-theme-dialog {
+	padding: unset;
+}
+
+.soup-add-question-form {
+	background-color: var(--soup-dark-blue);
+	overflow: auto;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-top: 20px;
+}
+
+.soup-question-form {
+	border: 1px solid;
+	border-radius: 5px;
+	background-color: var(--soup-very-light-grey);
+	padding: 10px 30px 20px 30px;
+}
+
+.soup-main-center-block {
+	background: var(--soup-background-image) no-repeat center center fixed;
+	background-size: cover;
+	height: var(--soup-valuable-heigth);
+}
+
+.soup-element-name {
+	padding-left: 10px;
+	word-break: break-all;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+}
+
+/*soup button as primary button*/
+vaadin-button {
+	background: linear-gradient(180deg, rgba(102, 102, 102, 1) 0%, rgba(102, 102, 102, 1) 0%, rgba(51, 51, 51, 1) 100%, rgba(51, 51, 51, 1) 100%);
+	--lumo-border-radius: 5px;
+	cursor: pointer;
+	border: var(--soup-button-border) 1px solid;
+	--lumo-primary-text-color: var(--soup-light-grey);
+}
+
+vaadin-button.soup-ok-button {
+	border-color: var(--soup-hover-button-color);
+}
+
+vaadin-button.soup-light-button {
+	background: linear-gradient(0deg, rgba(204, 204, 204, 1) 0%, rgba(204, 204, 204, 1) 0%, rgba(242, 242, 242, 1) 100%, rgba(242, 242, 242, 1) 100%);
+	border-color: rgba(102, 102, 102, 1);
+	--lumo-primary-text-color: rgba(102, 102, 102, 1);
+}
+
+.soup-icon-button {
+	background: linear-gradient(0deg, rgba(204, 204, 204, 1) 0%, rgba(204, 204, 204, 1) 0%, rgba(242, 242, 242, 1) 100%, rgba(242, 242, 242, 1) 100%);
+	border-color: rgba(102, 102, 102, 1);
+	--lumo-primary-text-color: rgba(102, 102, 102, 1);
+	padding: 0;
+}
+
+.soup-text-button {
+	background: linear-gradient(0deg, rgba(204, 204, 204, 1) 0%, rgba(204, 204, 204, 1) 0%, rgba(242, 242, 242, 1) 100%, rgba(242, 242, 242, 1) 100%);
+	border-color: rgba(102, 102, 102, 1);
+	--lumo-primary-text-color: rgba(102, 102, 102, 1);
+	padding: 0 3px;
+	width: 160px;
+}
+
+vaadin-button:hover {
+	border: var(--soup-hover-button-color) 1px solid;
+	color: var(--soup-hover-button-color);
+}
+
+vaadin-button.soup-link-active {
+	background: linear-gradient(180deg, var(--lumo-success-color-50pct) 0%, var(--lumo-success-color) 100%);
+	color: var(--soup-grey);
+}
+
+vaadin-button.soup-link-request {
+	background: linear-gradient(180deg, rgb(255, 169, 169) 0%, hsl(0, 100%, 50%) 100%);
+	color: var(--soup-grey);
+}
+
+.soup-error-message {
+	background-color: var(--lumo-error-color-10pct);
+	padding: var(--lumo-space-m);
+	padding-left: var(--lumo-size-m);
+	border-radius: var(--lumo-border-radius);
+	margin-top: var(--lumo-space-m);
+	margin-bottom: var(--lumo-space-s);
+	color: var(--lumo-error-text-color);
+}
+
+/*Верхняя панель - общая для всех*/
+.soup-top-panel {
+	background-color: var(--soup-top-panel-color);
+	width: 100%;
+	padding-right: 10px;
+	align-content: baseline;
+	/*justify-content: space-around;*/
+}
+
+.soup-combobox {
+	--vaadin-text-field-default-width: unset;
+	border: unset;
+	background: none !important;
+}
+
+.soup-add-tutor-inner-block vaadin-text-field, vaadin-password-field, vaadin-combo-box {
+	border: unset;
+	--lumo-base-color: white;
+}
+
+#overlay {
+	background: none;
+}
+
+#soup-student-group-grid[part~="cell"] {
+	cursor: pointer;
+}
+
+/*Кнопки верхней панели как исключительный случай кнопки*/
+.soup-top-panel-button {
+	background: none;
+	border: none;
+}
+
+.soup-top-panel-button:hover {
+	border: none;
+}
+
+.soup-login-input {
+	--lumo-contrast-10pct: var(--soup-very-light-grey);
+}
+
+.soup-settings-textarea {
+	width: 50%;
+}
+
+.soup-username-layout {
+	display: flex;
+	align-items: center;
+	margin-right: 10px;
+}
+
+/*Шаблон страниц с левой панелью*/
+.soup-admin-left-panel {
+	background-image: url("/img/u118.png");
+	flex-direction: column;
+}
+
+.soup-info-block-panel {
+	display: flex;
+	height: var(--soup-admin-info-panel-height);
+	max-height: var(--soup-admin-info-panel-height);
+}
+
+.soup-left-info-panel, .soup-right-info-panel {
+	height: inherit;
+}
+
+.soup-left-info-panel {
+	width: var(--soup-left-admin-panel-width);
+	min-width: var(--soup-left-admin-panel-width);
+	display: flex;
+	align-items: center;
+	border-right: 0.5px var(--soup-light-grey) solid;
+}
+
+.soup-left-panel-inner-div {
+	width: 100%;
+	overflow: auto;
+	height: 100%;
+}
+
+.soup-left-panel-inner-div vaadin-grid {
+	height: 100%;
+}
+
+.soup-right-info-panel {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	margin-left: 20px;
+}
+
+.soup-info-block {
+	flex-direction: column;
+	background: url("/img/u3699.png") no-repeat center center fixed;
+	background-size: cover;
+}
+
+.soup-center-block {
+	background: url("/img/u3699.png") no-repeat center center fixed;
+	background-size: cover;
+}
+
+.soup-personal-info {
+	margin-left: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: solid 2px var(--soup-personal-user-info-border-color);
+	border-radius: 5px;
+	width: 60%;
+	background: white;
+}
+
+.soup-user-info {
+	display: flex;
+	align-items: stretch;
+	margin: 20px;
+}
+
+.soup-user-rights-info {
+	margin-left: 20px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.soup-user-info-title {
+	padding-left: 20px;
+	font-weight: bold;
+}
+
+.soup-user-list-element {
+	cursor: pointer;
+	margin-left: 20px;
+	margin-top: 1%;
+}
+
+.soup-user-list-element:hover {
+	color: var(--lumo-error-color);
+}
+
+
+/*Add tutor*/
+.soup-add-tutor-inner-block {
+	margin-left: 20px;
+	max-height: var(--soup-valuable-heigth);
+	overflow: auto;
+}
+
+.soup-add-tutor-buttons-div {
+	width: 30%;
+	display: flex;
+	margin-top: 20px;
+}
+
+.soup-add-tutor-inner-block vaadin-text-field, vaadin-password-field, vaadin-combo-box {
+	/*border: 1px solid var(--soup-light-grey);*/
+	border-radius: var(--lumo-border-radius-m);
+	--lumo-contrast-10pct: white;
+	--vaadin-text-field-default-width: 400px;
+	/*background: white;*/
+	/*--lumo-text-field-size: 20px;*/
+}
+
+.soup-add-tutor-part-title {
+	font-weight: bold;
+	margin-left: -130px !important;
+	margin-top: 20px;
+}
+
+.soup-add-tutor-part-title.subtitle {
+	font-weight: normal;
+	margin-top: 10px;
+}
+
+/*Article8 */
+.soup-article-content .page {
+	/*min-height: unset;*/
+	min-height: 100%;
+	padding: unset;
+
+}
+
+.soup-article-content .page-break {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.soup-article-content-div {
+	height: 100%;
+	overflow: auto;
+	background: url("/img/u3699.png") no-repeat center center fixed;
+	background-size: cover;
+}
+
+.soup-article-edit-theme-buttons {
+	/*position: absolute;*/
+	/*bottom: 5px;*/
+	/*width: fit-content;*/
+}
+
+vaadin-dialog-overlay {
+	--lumo-base-color: var(--soup-dialog-overlay-background);
+	--lumo-body-text-color: #1e1e1e;
+}
+
+/* tutor menu tiles */
+.soup-tutor-menu-tile {
+	background: url(../img/tutor/tutor_grey.png) fixed no-repeat;
+	background-clip: padding-box;
+	background-size: contain;
+	color: var(--soup-light-grey);
+	margin: 0.2vw;
+	padding: 10px;
+	background-position: 45% 65%;
+	height: 100%;
+	width: 100%;
+}
+
+.soup-tutor-menu-tile:hover {
+	background: url(../img/tutor/tutor_red.png) fixed no-repeat;
+	background-size: contain;
+	cursor: pointer;
+	background-position: 45% 65%;
+}
+
+.soup-tutor-menu-tile:not(:hover) div {
+	display: none;
+}
+
+.soup-admin-menu-tile {
+	background: url(../img/ARM_adm_grey.png) fixed no-repeat;
+	background-clip: padding-box;
+	background-size: contain;
+	color: var(--soup-light-grey);
+	margin: 0.2vw;
+	padding: 10px;
+	background-position: 45% 65%;
+	height: 100%;
+	width: 100%;
+}
+
+.soup-admin-menu-tile:hover {
+	background: url(../img/ARM_adm_.png) fixed no-repeat;
+	background-size: contain;
+	cursor: pointer;
+	background-position: 45% 65%;
+}
+
+.soup-admin-menu-tile:not(:hover) div {
+	display: none;
+}
+
+.soup-student-menu-tile {
+	background: url(../img/ARM_stu_grey.png) fixed no-repeat;
+	background-clip: padding-box;
+	background-size: contain;
+	color: var(--soup-light-grey);
+	margin: 0.2vw;
+	padding: 10px;
+	background-position: 45% 65%;
+	height: 100%;
+	width: 100%;
+}
+
+.soup-student-menu-tile:hover {
+	background: url(../img/ARM_stu_red.png) fixed no-repeat;
+	background-size: contain;
+	cursor: pointer;
+	background-position: 45% 65%;
+}
+
+.soup-student-menu-tile:not(:hover) div {
+	display: none;
+}
+
+.soup-confirmation-dialog {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+@media all and (min-width: 800px) {
+	#soup-login-view {
+		padding-left: 200px;
+	}
+}
+
+@media all and (min-height: 800px) {
+	#soup-login-view {
+		padding-top: 200px;
+	}
+}

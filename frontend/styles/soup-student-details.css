@@ -1,0 +1,16 @@
+:host {
+	margin-left: 10px;
+	border: solid 1px var(--soup-grey);
+	border-radius: 5px;
+	background-color: white;
+}
+
+[part="summary"] {
+	background-color: #d8d7d7;
+}
+
+[part="summary"][aria-expanded=true] {
+	background-color: #d8d7d7;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}

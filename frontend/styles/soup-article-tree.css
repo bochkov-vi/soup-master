@@ -1,0 +1,16 @@
+/*:host([theme~="soup-tree-grid"])[part~="cell"]{*/
+/*	border: none!important;*/
+/*	background: none;*/
+/*	cursor: pointer!important;*/
+/*}*/
+[part~="cell"] ::slotted(vaadin-grid-cell-content) {
+	cursor: pointer;
+}
+:host([theme~="soup-tree-grid"]){
+	--_lumo-grid-border-width:0px!important;
+	background: none!important;
+}
+:host([theme~="soup-tree-grid"]:not([reordering])) [part~="row"][selected] [part~="body-cell"]:not([part~="details-cell"]) {
+	background-image: linear-gradient(var(--_lumo-grid-selected-row-color), var(--_lumo-grid-selected-row-color));
+	background-repeat: repeat;
+}

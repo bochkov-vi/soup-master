@@ -1,0 +1,111 @@
+.pdf-editor {
+	max-height: calc(100vh - 88px);
+}
+
+.editor_button {
+	border: 1px solid #767676;
+	margin: 3px;
+	font-size: 14px;
+}
+
+.editor_button:hover {
+	border: #ff5300 1px solid;
+}
+
+.editor_button_div {
+	position: absolute;
+	right: 20px;
+}
+
+.editor_top_div {
+	display: flex;
+	height: 50px;
+}
+
+.editor_label_div {
+	margin-left: 20px;
+	width: 100%;
+}
+
+.bg1 {
+	background: url("/img/pdf-editor_bgLeft.png");
+}
+
+p {
+	margin-block-start: 0!important;
+	margin-block-end: 0 !important;
+}
+.page {
+	display: inline-block;
+	min-height: 1110px;
+	width: 100%;
+	background: white;
+	text-align: left;
+	padding: 5px;
+}
+.template {
+	color: black;
+	width: 100%;
+	padding: 0px;
+}
+.page > .template:not(:last-child) {
+	margin-bottom: 5px;
+}
+div.dropzone.row {
+	min-height: 35px;
+	margin: 0;
+	transition: 300ms;
+}
+div.dropzone.row.empty-drop-zone {
+	min-height: 0px;
+	opacity: 0;
+}
+div.template.hover-state div.dropzone.row.empty-drop-zone {
+	min-height: 25px;
+	opacity: 1;
+	background-color: #0002;
+}
+.page .page-break {
+	margin-left: -20px;
+	margin-right: -20px;
+	background: var(--bg-col);
+	color: orange;
+}
+.page-break {
+	background: #eee;
+	height: 35px;
+	pointer-events:none;
+	text-align: center;
+	line-height: 35px;
+}
+.ck-widget__selection-handle {
+	display: none;
+}
+.ck-widget_with-selection-handle{
+	margin-top: 15px !important;
+}
+.ck-widget__selection-handle .ck.ck-icon {
+	opacity: 0;
+	pointer-events: none;
+}
+/*.template.col-xs {*/
+/*   padding: 2px!important;*/
+/*}*/
+/*.dropzone > .template {*/
+/*   height: 100%;*/
+/*}*/
+.page table {
+	border-collapse: collapse;
+}
+.page table td {
+	min-width: 40px;
+}
+
+@page {
+	margin: 0px;
+}
+
+.content .page.container div.add_editor_here{
+	overflow: hidden;
+	height: 100%;
+}

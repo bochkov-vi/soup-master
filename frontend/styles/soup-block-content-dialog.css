@@ -1,0 +1,29 @@
+html {
+	--soup-block-dialog-height: 72vh;
+}
+
+.soup-block-content-dialog {
+	background-color: var(--soup-dialog-overlay-background);
+}
+
+.soup-block-content-dialog-main {
+	background-color: var(--soup-dialog-overlay-background);
+}
+
+.soup-block-content-dialog-tree {
+	overflow: auto;
+	height: var(--soup-block-dialog-height);
+}
+
+.soup-block-content-dialog-block {
+	overflow: auto;
+	height: var(--soup-block-dialog-height);
+	border-left: 1px dashed var(--soup-dark-grey);
+	border-right: 1px dashed var(--soup-dark-grey);
+	padding-left: 5px;
+}
+
+.soup-block-content-dialog-content {
+	overflow: auto;
+	height: var(--soup-block-dialog-height);
+}

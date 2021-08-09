@@ -1,0 +1,8 @@
+html{
+	--lumo-icons-angle-right: "›";
+	--lumo-primary-color-50pct: none;
+}
+.tree:focus{
+	outline: none;
+	color: red;
+}
