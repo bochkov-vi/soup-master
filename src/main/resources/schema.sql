@@ -31,6 +31,7 @@ create table if not exists umm."lesson_type"
 
 create sequence if not exists hibernate_sequence start with 1000000;
 
+create schema if not exists syllabus;
 create table if not exists syllabus.cycle
 (
     name varchar(255),
