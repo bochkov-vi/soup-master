@@ -17,6 +17,7 @@ import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +28,9 @@ import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
 @PageTitle(PAGE_TITLE)
 public class SyllabusListView extends SpecialityListView implements HasUrlParameter<Long> {
     protected Button btnNew = new Button("Добавить");
-
+    protected Button btnReport = new Button("Отчет");
     protected SyllabusRepository syllabusRepository;
-    private Speciality entity;
+    private Speciality speciality;
     private Grid<Syllabus> grid;
 
     public SyllabusListView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusRepository syllabusRepository) {
@@ -38,6 +39,9 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         init();
         btnNew.addClickListener(e -> {
             getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class));
+        });
+        btnReport.addClickListener(e -> {
+            getUI().ifPresent(ui -> ui.navigate(SyllabusReportView.class, Optional.ofNullable(speciality).map(Speciality::getId).orElse(0L)));
         });
        /* btnEdit.setEnabled(true);
         btnEdit.addClickListener(e -> {
@@ -78,19 +82,24 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.add(btnNew);
         infoPanel.add(buttons);
+        buttons.add(btnReport);
         buttons.getStyle().set("padding-right", "20px");
-
+        btnReport.setEnabled(true);
         btnNew.setEnabled(true);
     }
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, Long id) {
-        entity = specialityRepository.findById(id).orElse(null);
+        speciality = specialityRepository.findById(id).orElse(null);
         fillTable();
     }
 
     private void fillTable() {
-        List<Syllabus> list = syllabusRepository.findAll((r, q, b) -> b.equal(r.get("speciality"), this.entity));
+        List<Syllabus> list = syllabusRepository.findAll((r, q, b) -> {
+            if (this.speciality != null && this.speciality.getId() > 0)
+                return b.equal(r.get("speciality"), this.speciality);
+            return null;
+        });
         grid.setItems(list);
     }
 

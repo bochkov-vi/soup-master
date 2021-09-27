@@ -1,0 +1,13 @@
+.rotated-head {
+    text-align: center;
+    white-space: nowrap;
+    transform-origin: 50% 50%;
+    transform: rotate(90deg);
+}
+
+.rotated-head:before {
+    content: '';
+    padding-top: 100%; /* takes width as reference, + 10% for faking some extra padding */
+    display: inline-block;
+    vertical-align: middle;
+}

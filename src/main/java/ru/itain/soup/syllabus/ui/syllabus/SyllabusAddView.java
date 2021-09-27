@@ -147,11 +147,11 @@ public class SyllabusAddView extends CommonView {
         department.setRequired(true);
         department.setItemLabelGenerator(VisualEntity::asString);
         department.setItems(departmentRepository.findAll());
-        layoutWithBinder.addFormItem(department, "УЧЕБНЫЙ ЦИКЛ");
+        layoutWithBinder.addFormItem(department, "КАФЕДРА");
         department.setRequiredIndicatorVisible(true);
         syllabusBinder.forField(department).bind(Syllabus::getDepartment, Syllabus::setDepartment);
 
-        base = new Checkbox("Базовая часть");
+        base = new Checkbox("БАЗОВАЯ ЧАСТЬ");
         layoutWithBinder.addFormItem(base, "");
         syllabusBinder.forField(base).bind(Syllabus::isBase, Syllabus::setBase);
 

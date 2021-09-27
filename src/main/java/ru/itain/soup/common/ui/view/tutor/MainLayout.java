@@ -24,6 +24,7 @@ import ru.itain.soup.common.ui.view.tutor.archive.ArchiveView;
 import ru.itain.soup.common.ui.view.tutor.article.ArticleMainView;
 import ru.itain.soup.common.ui.view.tutor.im.presentations.PresentationsView;
 import ru.itain.soup.common.ui.view.tutor.journal.JournalView;
+import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tutor.lesson.ui.view.lessons.LessonView;
 import ru.itain.soup.tutor.simulator.ui.view.simulators.SimulatorsView;
 import ru.itain.soup.tutor.simulator_prepare.ui.view.personals.AddStudentView;
@@ -35,7 +36,6 @@ import ru.itain.soup.tutor.simulator_prepare.ui.view.personals.groups.EditStuden
 import ru.itain.soup.tutor.simulator_prepare.ui.view.personals.groups.StudentGroupView;
 import ru.itain.soup.tutor.test.ui.view.tests.TestsView;
 import ru.itain.soup.tutor.umm.ui.view.plan.ThematicPlan;
-import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tutor.umm.ui.view.umm.UmmMainView;
 
 import java.util.HashMap;

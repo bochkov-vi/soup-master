@@ -1,5 +1,8 @@
 package ru.itain.soup.tool.umm_editor.dto.umm;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import ru.itain.soup.common.dto.VisualEntity;
 
 import javax.persistence.*;
@@ -10,6 +13,9 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(schema = "\"users\"")
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Speciality implements VisualEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,19 +35,4 @@ public class Speciality implements VisualEntity {
         return name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

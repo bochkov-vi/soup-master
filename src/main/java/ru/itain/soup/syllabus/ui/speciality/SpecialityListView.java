@@ -1,6 +1,7 @@
 package ru.itain.soup.syllabus.ui.speciality;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Streams;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -28,19 +29,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Secured("ROLE_TUTOR")
 @PageTitle("СОУП - Преподаватель")
-@Route(value = "tutor/speciality", layout = MainLayout.class)
+@Route(value = "tutor/syllabus", layout = MainLayout.class)
 public class SpecialityListView extends CommonView {
 
     protected Map<Long, Tab> navigationTargetToTab = new HashMap<>();
     protected DisciplineRepository disciplineRepository;
     protected SpecialityRepository specialityRepository;
 
-    Tabs specialityList;
-    private Button btnEditSpeciality = new Button("+/-Специальность");
+    protected Tabs specialityList;
+    private final Button btnEditSpeciality = new Button("+/-Специальность");
 
     public SpecialityListView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository) {
         this.disciplineRepository = disciplineRepository;
@@ -121,10 +123,10 @@ public class SpecialityListView extends CommonView {
 
     }
 
-    private void fillTabs() {
+    protected void fillTabs() {
         specialityList.removeAll();
         AtomicReference<Long> firstInList = new AtomicReference();
-        StreamSupport.stream(specialityRepository.findAll().spliterator(), false)
+        Streams.concat(Stream.of(new Speciality("Все").setId(0)), StreamSupport.stream(specialityRepository.findAll().spliterator(), false))
                 .forEach(speciality -> {
                     long id = speciality.getId();
                     if (firstInList.get() == null) {

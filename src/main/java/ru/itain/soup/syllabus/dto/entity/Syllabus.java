@@ -1,5 +1,6 @@
 package ru.itain.soup.syllabus.dto.entity;
 
+import com.google.common.base.MoreObjects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -9,6 +10,7 @@ import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Entity
 @Table(schema = "syllabus")
@@ -45,7 +47,13 @@ public class Syllabus extends BaseEntity implements VisualEntity {
 
     @Override
     public String asString() {
-        return null;
+        Optional<Syllabus> entity = Optional.ofNullable(this);
+        return MoreObjects.toStringHelper("Учебный план")
+                .add("Специалность", entity.map(Syllabus::getSpeciality).map(VisualEntity::asString).orElse(null))
+                .add("Дисциплина", entity.map(Syllabus::getDiscipline).map(VisualEntity::asString).orElse(null))
+                .add("Кафедра", entity.map(Syllabus::getDepartment).map(VisualEntity::asString).orElse(null))
+                .add("Цикл", entity.map(Syllabus::getCycle).map(VisualEntity::asString).orElse(null))
+                .toString();
     }
 
 }

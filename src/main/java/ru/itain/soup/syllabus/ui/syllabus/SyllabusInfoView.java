@@ -1,5 +1,6 @@
 package ru.itain.soup.syllabus.ui.syllabus;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -12,10 +13,12 @@ import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.dto.VisualEntity;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
+import ru.itain.soup.common.ui.component.SoupBaseDialog;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
 import ru.itain.soup.syllabus.dto.repository.SyllabusRepository;
 import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
+import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
 import java.text.NumberFormat;
@@ -26,6 +29,8 @@ import java.util.Optional;
 @Route(value = "tutor/syllabus/info", layout = MainLayout.class)
 public class SyllabusInfoView extends SpecialityListView implements HasUrlParameter<Long> {
     protected Button btnEdit = new Button("Редактировать");
+    protected Button btnDelete = new Button("Удалить");
+
     SyllabusRepository syllabusRepository;
 
 
@@ -48,6 +53,20 @@ public class SyllabusInfoView extends SpecialityListView implements HasUrlParame
 
     private void initPage() {
         btnEdit.addClickListener(e -> btnEdit.getUI().ifPresent(ui -> ui.navigate(SyllabusEditView.class, entity.getId())));
+        btnDelete.addClickListener(e -> {
+            Optional<Syllabus> syllabus = Optional.ofNullable(entity);
+            SoupBaseDialog dialog = new SoupBaseDialog(ok -> {
+                syllabusRepository.delete(entity);
+
+                Optional<Long> idSpeciality = Optional.ofNullable(entity.getSpeciality()).map(Speciality::getId);
+                if (idSpeciality.isPresent())
+                    UI.getCurrent().navigate(SyllabusListView.class, idSpeciality.get());
+                else
+                    UI.getCurrent().navigate(SyllabusListView.class);
+            }, "Удаление", "Удалить запись " + syllabus.map(Syllabus::asString).orElse(null) + "?");
+            dialog.open();
+        });
+
         FlexLayout info = new FlexLayout();
         info.getStyle().set("border", "1px solid var(--soup-dark-grey)");
         info.getStyle().set("margin-left", "20px");
@@ -133,6 +152,7 @@ public class SyllabusInfoView extends SpecialityListView implements HasUrlParame
 
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.add(btnEdit);
+        buttons.add(btnDelete);
         infoPanel.add(buttons);
         buttons.getStyle().set("padding-right", "20px");
     }
