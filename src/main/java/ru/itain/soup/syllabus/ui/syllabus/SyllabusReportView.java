@@ -6,34 +6,30 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import com.vaadin.flow.server.StreamResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import ru.itain.soup.common.dto.VisualEntity;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
 import ru.itain.soup.syllabus.dto.entity.Cycle;
-import ru.itain.soup.syllabus.dto.entity.Department;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
 import ru.itain.soup.syllabus.dto.repository.CycleRepository;
 import ru.itain.soup.syllabus.dto.repository.DepartmentRepository;
 import ru.itain.soup.syllabus.dto.repository.SyllabusRepository;
+import ru.itain.soup.syllabus.service.ReportSyllabusService;
 import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
-import ru.itain.soup.tool.umm_editor.dto.umm.Discipline;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
 
@@ -44,14 +40,17 @@ import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
 public class SyllabusReportView extends SpecialityListView implements HasUrlParameter<Long> {
     protected Button btnNew = new Button("Добавить");
 
-    protected SyllabusRepository syllabusRepository;
+     SyllabusRepository syllabusRepository;
     private Speciality speciality;
     private CycleRepository cycleRepository;
     DepartmentRepository departmentRepository;
     HtmlContainer caption;
-    Grid<Row> grid;
+    Grid<ReportSyllabusService.Row> grid;
     @Autowired
     DataSource dataSource;
+    Button btnDownload = new Button("Excel");
+    @Autowired
+    ReportSyllabusService reportSyllabusService;
 
     public SyllabusReportView(DisciplineRepository disciplineRepository,
                               SpecialityRepository specialityRepository,
@@ -66,6 +65,7 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
         btnNew.addClickListener(e -> {
             getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class));
         });
+
 
 
        /* btnEdit.setEnabled(true);
@@ -85,7 +85,6 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
 
     private void init() {
 
-
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.add(btnNew);
 
@@ -94,6 +93,12 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
 
         btnNew.setEnabled(false);
         createGrid();
+
+        Anchor download = new Anchor(new StreamResource("учебный_план.xlsx", () -> reportSyllabusService.getXlsxInputStream(this.speciality)), "");
+        download.getElement().setAttribute("download", true);
+
+        download.add(btnDownload);
+        buttons.add(download);
     }
 
     @Override
@@ -121,9 +126,9 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
         List<Cycle> cycles = cycleRepository.findAll();
         List<HeaderRow.HeaderCell> cycleHeaders = Lists.newArrayList();
         for (Cycle cycle : cycles) {
-            Grid.Column c1 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getIntensity).orElse(null)).setHeader(("ЗЕ")).setAutoWidth(true);
-            Grid.Column c2 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getTrainingHours).orElse(null)).setHeader(("УЗ")).setAutoWidth(true);
-            Grid.Column c3 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getSelfStudyHours).orElse(null)).setHeader(("СР")).setAutoWidth(true);
+            Grid.Column c1 = grid.addColumn((e) -> Optional.ofNullable(e.getCycles().get(cycle)).map(Syllabus::getIntensity).orElse(null)).setHeader(("ЗЕ")).setAutoWidth(true);
+            Grid.Column c2 = grid.addColumn((e) -> Optional.ofNullable(e.getCycles().get(cycle)).map(Syllabus::getTrainingHours).orElse(null)).setHeader(("УЗ")).setAutoWidth(true);
+            Grid.Column c3 = grid.addColumn((e) -> Optional.ofNullable(e.getCycles().get(cycle)).map(Syllabus::getSelfStudyHours).orElse(null)).setHeader(("СР")).setAutoWidth(true);
             HeaderRow.HeaderCell headerCell = cycleRow.join(c1, c2, c3);
             headerCell.setComponent(new Label(cycle.asString()));
             cycleHeaders.add(headerCell);
@@ -149,37 +154,11 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
     private void fillTable() {
         if (this.speciality != null) {
             this.caption.setText(speciality.asString());
-            this.grid.setItems(getDataForReport(speciality));
+            this.grid.setItems(reportSyllabusService.getDataForReport(speciality));
         }
 
     }
 
-    List<Row> getDataForReport(Speciality speciality) {
-        return new JdbcTemplate(dataSource).query("select speciality_id, discipline_id, department_id from syllabus.syllabus where speciality_id = ? group by speciality_id, discipline_id, department_id", new Object[]{speciality.getId()},
-                        (rs, i) -> {
-                            Discipline discipline = disciplineRepository.findById(rs.getLong(2)).orElse(null);
-                            Department department = departmentRepository.findById(rs.getLong(3)).orElse(null);
-                            return new Row().setSpeciality(speciality)
-                                    .setDepartment(department)
-                                    .setDiscipline(discipline);
-                        }).stream()
-                .map(row -> {
-                    row.cycles = syllabusRepository.findAll(speciality, row.department, row.discipline).stream().collect(Collectors.toMap(s -> s.getCycle(), s -> s));
-                    return row;
-                }).collect(Collectors.toList());
-    }
-
-    @Data
-    @Accessors(chain = true)
-    class Row {
-        Discipline discipline;
-
-        Department department;
-
-        Speciality speciality;
-
-        Map<Cycle, Syllabus> cycles;
-    }
 
     @Override
     protected RouterLink createSpecialityLink(Speciality speciality) {

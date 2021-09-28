@@ -38,3 +38,4 @@ create table if not exists syllabus.cycle
     id   bigint not null
         constraint cycle_pkey primary key
 );
+create schema if not exists simulator;

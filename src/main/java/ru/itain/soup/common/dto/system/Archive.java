@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * Архив.
  */
 @Entity
-@Table(schema = "system")
+@Table(schema = "\"system\"")
 public class Archive {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

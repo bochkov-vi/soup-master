@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * Системная таблица.
  */
 @Entity
-@Table(schema = "system")
+@Table(schema = "\"system\"")
 public class System {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

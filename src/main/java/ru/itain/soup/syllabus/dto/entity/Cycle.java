@@ -1,6 +1,8 @@
 package ru.itain.soup.syllabus.dto.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.itain.soup.common.dto.VisualEntity;
@@ -13,6 +15,8 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cycle extends BaseEntity implements VisualEntity {
     String name;
 
