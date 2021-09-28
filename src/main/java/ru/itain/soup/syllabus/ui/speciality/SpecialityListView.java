@@ -1,7 +1,6 @@
 package ru.itain.soup.syllabus.ui.speciality;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Streams;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -29,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Secured("ROLE_TUTOR")
@@ -123,16 +121,20 @@ public class SpecialityListView extends CommonView {
 
     }
 
+    protected RouterLink createSpecialityLink(Speciality speciality) {
+        return new RouterLink(speciality.asString(), SyllabusListView.class, speciality.getId());
+    }
+
     protected void fillTabs() {
         specialityList.removeAll();
         AtomicReference<Long> firstInList = new AtomicReference();
-        Streams.concat(Stream.of(new Speciality("Все").setId(0)), StreamSupport.stream(specialityRepository.findAll().spliterator(), false))
+        StreamSupport.stream(specialityRepository.findAll().spliterator(), false)
                 .forEach(speciality -> {
                     long id = speciality.getId();
                     if (firstInList.get() == null) {
                         firstInList.set(id);
                     }
-                    RouterLink routerLink = new RouterLink(speciality.asString(), SyllabusListView.class, id);
+                    RouterLink routerLink = createSpecialityLink(speciality);
                     Tab tab = new Tab(routerLink);
                     specialityList.add(tab);
                     navigationTargetToTab.put(id, tab);

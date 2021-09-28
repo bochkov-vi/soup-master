@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Entity
-@Table(schema = "syllabus")
+@Table(schema = "syllabus", uniqueConstraints = @UniqueConstraint(name = "syllabus_unique_discipline", columnNames = {"speciality_id", "discipline_id", "cycle_id"}))
 @Getter
 @Setter
 @Accessors(chain = true)

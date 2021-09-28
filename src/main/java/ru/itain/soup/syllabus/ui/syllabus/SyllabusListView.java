@@ -17,7 +17,6 @@ import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +40,9 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
             getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class));
         });
         btnReport.addClickListener(e -> {
-            getUI().ifPresent(ui -> ui.navigate(SyllabusReportView.class, Optional.ofNullable(speciality).map(Speciality::getId).orElse(0L)));
+            if (speciality != null) {
+                getUI().ifPresent(ui -> ui.navigate(SyllabusReportView.class, speciality.getId()));
+            }
         });
        /* btnEdit.setEnabled(true);
         btnEdit.addClickListener(e -> {
@@ -96,8 +97,9 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
 
     private void fillTable() {
         List<Syllabus> list = syllabusRepository.findAll((r, q, b) -> {
-            if (this.speciality != null && this.speciality.getId() > 0)
+            if (this.speciality != null && this.speciality.getId() > 0) {
                 return b.equal(r.get("speciality"), this.speciality);
+            }
             return null;
         });
         grid.setItems(list);

@@ -1,5 +1,6 @@
 package ru.itain.soup.syllabus.ui.syllabus;
 
+import com.google.common.collect.Lists;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -9,15 +10,10 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.itain.soup.common.dto.VisualEntity;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
@@ -52,6 +48,8 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
     private Speciality speciality;
     private CycleRepository cycleRepository;
     DepartmentRepository departmentRepository;
+    HtmlContainer caption;
+    Grid<Row> grid;
     @Autowired
     DataSource dataSource;
 
@@ -68,6 +66,7 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
         btnNew.addClickListener(e -> {
             getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class));
         });
+
 
        /* btnEdit.setEnabled(true);
         btnEdit.addClickListener(e -> {
@@ -93,8 +92,8 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
         infoPanel.add(buttons);
         buttons.getStyle().set("padding-right", "20px");
 
-        btnNew.setEnabled(true);
-
+        btnNew.setEnabled(false);
+        createGrid();
     }
 
     @Override
@@ -103,37 +102,44 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
         fillTable();
     }
 
-    HtmlContainer createGrid(Speciality speciality) {
-        Div div = new Div();
-        div.getStyle().set("width", "100%").set("display", "block");
-        H5 header = new H5();
-        header.setText(speciality.asString());
-        div.add(header);
-        Grid<Row> grid = new Grid<>();
-        grid.setMinHeight("600px");
+    void createGrid() {
+        this.caption = new H5();
+
+        center.add(caption);
+        grid = new Grid<>();
+        center.add(grid);
         grid.setThemeName("column-borders");
         grid.getStyle().set("background", "none");
-
         grid.setClassName("syllabus-report");
+
         //grid.addColumn((e)-> Optional.ofNullable(e.getSpeciality()).map(VisualEntity::asString).orElse(null)).setHeader("СПЕЦИАЛЬНОСТЬ");
 
-        grid.addColumn((e) -> Optional.ofNullable(e.getDiscipline()).map(VisualEntity::asString).orElse(null)).setHeader(("ДИСЦИПЛИНА"));
-        grid.addColumn((e) -> Optional.ofNullable(e.getDepartment()).map(VisualEntity::asString).orElse(null)).setHeader(("КАФЕДРА"));
-        HeaderRow topRow = grid.prependHeaderRow();
-        cycleRepository.findAll().stream().forEach(cycle -> {
-            Grid.Column c1 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getIntensity).orElse(null)).setHeader(("ЗЕ")).setWidth("3rem").setAutoWidth(true);
-            Grid.Column c2 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getTrainingHours).orElse(null)).setHeader(("УЗ")).setWidth("3rem").setAutoWidth(true);
-            Grid.Column c3 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getSelfStudyHours).orElse(null)).setHeader(("СР")).setWidth("3rem").setAutoWidth(true);
-            topRow.join(c1, c2, c3).setComponent(new Label(cycle.asString()));
-        });
+        grid.addColumn((e) -> Optional.ofNullable(e.getDiscipline()).map(VisualEntity::asString).orElse(null)).setHeader(("ДИСЦИПЛИНА")).setAutoWidth(true);
+        grid.addColumn((e) -> Optional.ofNullable(e.getDepartment()).map(VisualEntity::asString).orElse(null)).setHeader(("КАФЕДРА")).setAutoWidth(true);
+        HeaderRow cycleRow = grid.prependHeaderRow();
 
+        List<Cycle> cycles = cycleRepository.findAll();
+        List<HeaderRow.HeaderCell> cycleHeaders = Lists.newArrayList();
+        for (Cycle cycle : cycles) {
+            Grid.Column c1 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getIntensity).orElse(null)).setHeader(("ЗЕ")).setAutoWidth(true);
+            Grid.Column c2 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getTrainingHours).orElse(null)).setHeader(("УЗ")).setAutoWidth(true);
+            Grid.Column c3 = grid.addColumn((e) -> Optional.ofNullable(e.cycles.get(cycle)).map(Syllabus::getSelfStudyHours).orElse(null)).setHeader(("СР")).setAutoWidth(true);
+            HeaderRow.HeaderCell headerCell = cycleRow.join(c1, c2, c3);
+            headerCell.setComponent(new Label(cycle.asString()));
+            cycleHeaders.add(headerCell);
+        }
+        /*HeaderRow courseRow = grid.prependHeaderRow();
+        for (int i = 0; i + 1 < cycleHeaders.size(); i = i + 1) {
+            HeaderRow.HeaderCell headerCell = courseRow.join(cycleHeaders.get(i), cycleHeaders.get(i + 1));
+            headerCell.setComponent(new Label((i + 1) / 2 + " курс"));
+        }
+*/
 
-        div.add(grid);
-        grid.setItems(getDataForReport(speciality));
-        return div;
+        center.add(grid);
+
     }
 
-    HtmlContainer createColumnHead(String text) {
+    HtmlContainer createVerticalColumnHead(String text) {
         Div hdiv = new Div();
         hdiv.setText(text);
         hdiv.setClassName("rotated-head");
@@ -141,24 +147,11 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
     }
 
     private void fillTable() {
-        VerticalLayout scrollableLayout = new VerticalLayout();
-        //scrollableLayout.setHeight("600px");
-        //scrollableLayout.setWidth(null);    // Set overflow on the y-axis to "auto".
-        // It can be also "scroll", but then you
-        // have a scroll bar even when one isn't needed.
-        scrollableLayout.getStyle().set("overflow-y", "auto");
-        specialityRepository
-                .findAll(Optional.ofNullable(speciality).filter(s -> s.getId() > 0)
-                        .map(s -> (Specification<Speciality>) (r, q, b) -> b.equal(r.get("id"), s.getId())).orElse(null)).stream()
-                .map(this::createGrid).forEach(scrollableLayout::add);
-        center.add(scrollableLayout);
+        if (this.speciality != null) {
+            this.caption.setText(speciality.asString());
+            this.grid.setItems(getDataForReport(speciality));
+        }
 
-        /* List<Syllabus> list = syllabusRepository.findAll((r, q, b) -> {
-            if (this.speciality != null && this.speciality.getId() > 0)
-                return b.equal(r.get("speciality"), this.speciality);
-            return null;
-        });
-        grid.setItems(list);*/
     }
 
     List<Row> getDataForReport(Speciality speciality) {
@@ -188,5 +181,9 @@ public class SyllabusReportView extends SpecialityListView implements HasUrlPara
         Map<Cycle, Syllabus> cycles;
     }
 
+    @Override
+    protected RouterLink createSpecialityLink(Speciality speciality) {
+        return new RouterLink(speciality.asString(), SyllabusReportView.class, speciality.getId());
+    }
 
 }
