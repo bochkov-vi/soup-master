@@ -11,9 +11,7 @@ import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import java.util.List;
 
 public interface SyllabusRepository extends JpaRepository<Syllabus, Long>, JpaSpecificationExecutor<Syllabus> {
-    @Query("select o.speciality,o.discipline,o.department from Syllabus o WHERE o.speciality=:speciality group by o.speciality,o.discipline,o.department")
-    List<Object[]> findReportRows(Speciality speciality);
 
-    @Query("SELECT o FROM Syllabus  o WHERE o.discipline=:discipline AND o.speciality=:speciality AND o.department=:department")
-    List<Syllabus> findAll(Speciality speciality, Department department, Discipline discipline);
+
+
 }

@@ -9,11 +9,11 @@ import ru.itain.soup.tool.umm_editor.dto.umm.Discipline;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Optional;
 
 @Entity
-@Table(schema = "syllabus", uniqueConstraints = @UniqueConstraint(name = "syllabus_unique_discipline", columnNames = {"speciality_id", "discipline_id", "cycle_id"}))
+@Table(schema = "syllabus")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -27,23 +27,97 @@ public class Syllabus extends BaseEntity implements VisualEntity {
     @JoinColumn(name = "discipline_id")
     private Discipline discipline;
 
-    @ManyToOne
-    @JoinColumn(name = "cycle_id")
-    private Cycle cycle;
+    private String index;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
+    private int fertileUnits;//зачетные еденицы
+
+    private int lectures;
+    private int seminars;
+    private int groupExercises;
+    private int groupLessons;
+    private int laboratoryWorks;
+    private int practicalLessons;
+    private int specialLessons;
+    private int courseWorks;
+    private int conferences;
+    private int practices;
+    private int tests;//контрольные работы
+    private int credit;//зачеты
+    private int undefiningParameter;
 
     private boolean base = true;
 
-    //трудоемкость в зачетных еденицах
-    @Column(precision = 3, scale = 1)
-    private BigDecimal intensity;
 
-    private Integer trainingHours;
+    //====формы промежуточного и итого контроля
 
-    private Integer selfStudyHours;
+    BigInteger examControl;
+    BigInteger gradedCreditControl;
+    BigInteger passWithoutAssessmentControl;
+    BigInteger courseWorkControl;
+
+
+    public int getBaseFertileUnits() {
+        return base ? fertileUnits : 0;
+    }
+
+    public int getVariatyFertileUnits() {
+        return !base ? fertileUnits : 0;
+    }
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "intensityCycle1", column = @Column(name = "year1_cycle1_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle1", column = @Column(name = "year1_cycle1_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle1", column = @Column(name = "year1_cycle1_self_study_hours")),
+            @AttributeOverride(name = "intensityCycle2", column = @Column(name = "year1_cycle2_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle2", column = @Column(name = "year1_cycle2_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle2", column = @Column(name = "year1_cycle2_self_study_hours"))
+    })
+    @Embedded
+    StudyYear studyYear1 = new StudyYear();
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "intensityCycle1", column = @Column(name = "year2_cycle1_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle1", column = @Column(name = "year2_cycle1_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle1", column = @Column(name = "year2_cycle1_self_study_hours")),
+            @AttributeOverride(name = "intensityCycle2", column = @Column(name = "year2_cycle2_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle2", column = @Column(name = "year2_cycle2_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle2", column = @Column(name = "year2_cycle2_self_study_hours"))
+    })
+    @Embedded
+    StudyYear studyYear2 = new StudyYear();
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "intensityCycle1", column = @Column(name = "year3_cycle1_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle1", column = @Column(name = "year3_cycle1_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle1", column = @Column(name = "year3_cycle1_self_study_hours")),
+            @AttributeOverride(name = "intensityCycle2", column = @Column(name = "year3_cycle2_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle2", column = @Column(name = "year3_cycle2_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle2", column = @Column(name = "year3_cycle2_self_study_hours"))
+    })
+    @Embedded
+    StudyYear studyYear3 = new StudyYear();
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "intensityCycle1", column = @Column(name = "year4_cycle1_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle1", column = @Column(name = "year4_cycle1_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle1", column = @Column(name = "year4_cycle1_self_study_hours")),
+            @AttributeOverride(name = "intensityCycle2", column = @Column(name = "year4_cycle2_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle2", column = @Column(name = "year4_cycle2_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle2", column = @Column(name = "year4_cycle2_self_study_hours"))
+    })
+    @Embedded
+    StudyYear studyYear4 = new StudyYear();
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "intensityCycle1", column = @Column(name = "year5_cycle1_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle1", column = @Column(name = "year5_cycle1_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle1", column = @Column(name = "year5_cycle1_self_study_hours")),
+            @AttributeOverride(name = "intensityCycle2", column = @Column(name = "year5_cycle2_intensity")),
+            @AttributeOverride(name = "trainingHoursCycle2", column = @Column(name = "year5_cycle2_training_hours")),
+            @AttributeOverride(name = "selfStudyHoursCycle2", column = @Column(name = "year5_cycle2_self_study_hours"))
+    })
+    @Embedded
+    StudyYear studyYear5 = new StudyYear();
 
     @Override
     public String asString() {
@@ -51,8 +125,6 @@ public class Syllabus extends BaseEntity implements VisualEntity {
         return MoreObjects.toStringHelper("Учебный план")
                 .add("Специалность", entity.map(Syllabus::getSpeciality).map(VisualEntity::asString).orElse(null))
                 .add("Дисциплина", entity.map(Syllabus::getDiscipline).map(VisualEntity::asString).orElse(null))
-                .add("Кафедра", entity.map(Syllabus::getDepartment).map(VisualEntity::asString).orElse(null))
-                .add("Цикл", entity.map(Syllabus::getCycle).map(VisualEntity::asString).orElse(null))
                 .toString();
     }
 

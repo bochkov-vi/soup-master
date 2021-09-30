@@ -14,21 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ReportSyllabusService {
-    InputStream getXlsxInputStream(Speciality speciality);
 
-    HSSFWorkbook getXlsxReport(Speciality speciality);
 
-    List<Row> getDataForReport(Speciality speciality);
+    List<Syllabus> getDataForReport(Speciality speciality);
 
-    @Data
-    @Accessors(chain = true)
-    static class Row {
-        Discipline discipline;
 
-        Department department;
-
-        Speciality speciality;
-
-        Map<Cycle, Syllabus> cycles;
-    }
 }

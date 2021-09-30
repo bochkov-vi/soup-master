@@ -4,7 +4,6 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.itain.soup.syllabus.dto.entity.Cycle;
 import ru.itain.soup.syllabus.dto.entity.Department;
@@ -12,7 +11,6 @@ import ru.itain.soup.syllabus.dto.entity.Syllabus;
 import ru.itain.soup.syllabus.dto.repository.CycleRepository;
 import ru.itain.soup.syllabus.dto.repository.DepartmentRepository;
 import ru.itain.soup.syllabus.dto.repository.SyllabusRepository;
-import ru.itain.soup.tool.umm_editor.dto.umm.Discipline;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ReportSyllabusServiceImpl implements ReportSyllabusService {
@@ -37,7 +34,7 @@ public class ReportSyllabusServiceImpl implements ReportSyllabusService {
     SyllabusRepository syllabusRepository;
     @Autowired
     CycleRepository cycleRepository;
-
+/*
     @Override
     public InputStream getXlsxInputStream(Speciality speciality) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -47,9 +44,9 @@ public class ReportSyllabusServiceImpl implements ReportSyllabusService {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
-    @Override
+   /* @Override
     public HSSFWorkbook getXlsxReport(Speciality speciality) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         List<Row> data = getDataForReport(speciality);
@@ -95,7 +92,7 @@ public class ReportSyllabusServiceImpl implements ReportSyllabusService {
         for (int i = 0; i < col; i++)
             sheet.autoSizeColumn(i);
         return workbook;
-    }
+    }*/
 
     public int fillHeader(HSSFSheet sheet, int rowNum) {
         HSSFWorkbook workbook = sheet.getWorkbook();
@@ -106,10 +103,20 @@ public class ReportSyllabusServiceImpl implements ReportSyllabusService {
         font.setBold(true);
         style.setFont(font);
         int col = 0;
-
+        List<Cycle> cycles = cycleRepository.findAll(Sort.by("id"));
         HSSFRow row = sheet.createRow(rowNum);
         col = 2;
-        List<Cycle> cycles = cycleRepository.findAll(Sort.by("id"));
+        for (int i = 0; i < cycles.size(); i += 2) {
+            HSSFCell cell = row.createCell(i * 3 + col);
+            cell.setCellValue(cycles.get(i).asString());
+            cell.setCellStyle(style);
+            sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, i * 3 + col, i * 3 + 2 + col));
+        }
+
+        rowNum++;
+        row = sheet.createRow(rowNum);
+        col = 2;
+
         for (int i = 0; i < cycles.size(); i++) {
             HSSFCell cell = row.createCell(i * 3 + col);
             cell.setCellValue(cycles.get(i).asString());
@@ -152,18 +159,7 @@ public class ReportSyllabusServiceImpl implements ReportSyllabusService {
 
 
     @Override
-    public List<Row> getDataForReport(Speciality speciality) {
-        return new JdbcTemplate(dataSource).query("select speciality_id, discipline_id, department_id from syllabus.syllabus where speciality_id = ? group by speciality_id, discipline_id, department_id", new Object[]{speciality.getId()},
-                        (rs, i) -> {
-                            Discipline discipline = disciplineRepository.findById(rs.getLong(2)).orElse(null);
-                            Department department = departmentRepository.findById(rs.getLong(3)).orElse(null);
-                            return new Row().setSpeciality(speciality)
-                                    .setDepartment(department)
-                                    .setDiscipline(discipline);
-                        }).stream()
-                .map(row -> {
-                    row.cycles = syllabusRepository.findAll(speciality, row.department, row.discipline).stream().collect(Collectors.toMap(s -> s.getCycle(), s -> s));
-                    return row;
-                }).collect(Collectors.toList());
+    public List<Syllabus> getDataForReport(Speciality speciality) {
+        return syllabusRepository.findAll((r, q, b) -> b.equal(r.get("speciality"), speciality));
     }
 }
