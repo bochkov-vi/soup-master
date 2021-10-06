@@ -11,6 +11,12 @@
     display: inline-block;
     vertical-align: middle;
 }
-.syllabus-report{
 
+.syllabus-report {
+
+}
+
+.border {
+    border: black solid 1px;
+    border-radius: 2px;
 }

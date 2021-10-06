@@ -6,11 +6,11 @@ import ru.itain.soup.syllabus.dto.entity.StudyYear;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Optional;
 
 @Data
 public class SyllabusRow {
+    final Integer id;
     private final Integer seminars;
     private final Integer groupExercises;
     private final Integer groupLessons;
@@ -63,7 +63,11 @@ public class SyllabusRow {
 
     SyllabusRow(Syllabus syllabus) {
         Optional<Syllabus> o = Optional.ofNullable(syllabus);
+        this.id = new Long(syllabus.getId()).intValue();
         this.index = syllabus.getIndex();
+        if (index == null) {
+            index = id.toString();
+        }
         this.discipline = o.map(Syllabus::getDiscipline).map(VisualEntity::asString).orElse(null);
         this.fertileUnits = o.map(Syllabus::getFertileUnits).orElse(0);
         this.bFertileUnits = o.filter(Syllabus::isBase).map(Syllabus::getFertileUnits).filter(v -> v > 0).orElse(null);
@@ -138,10 +142,10 @@ public class SyllabusRow {
 
 
         //========================
-        this.examControl = o.map(Syllabus::getExamControl).map(BigInteger::doubleValue).filter(v -> v > 0).orElse(null);
-        this.gradedCreditControl = o.map(Syllabus::getGradedCreditControl).map(BigInteger::doubleValue).filter(v -> v > 0).orElse(null);
-        this.passWithoutAssessmentControl = o.map(Syllabus::getPassWithoutAssessmentControl).map(BigInteger::doubleValue).filter(v -> v > 0).orElse(null);
-        this.courseWorkControl = o.map(Syllabus::getCourseWorkControl).map(BigInteger::doubleValue).filter(v -> v > 0).orElse(null);
+        this.examControl = o.map(Syllabus::getExamControl).map(BigDecimal::doubleValue).filter(v -> v > 0).orElse(null);
+        this.gradedCreditControl = o.map(Syllabus::getGradedCreditControl).map(BigDecimal::doubleValue).filter(v -> v > 0).orElse(null);
+        this.passWithoutAssessmentControl = o.map(Syllabus::getPassWithoutAssessmentControl).map(BigDecimal::doubleValue).filter(v -> v > 0).orElse(null);
+        this.courseWorkControl = o.map(Syllabus::getCourseWorkControl).map(BigDecimal::doubleValue).filter(v -> v > 0).orElse(null);
 
     }
 

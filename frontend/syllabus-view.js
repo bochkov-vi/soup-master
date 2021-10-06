@@ -41,9 +41,9 @@ class SyllabusView extends PolymerElement {
                         <th rowspan="4">
                             <div part="rotated-head">Учебные занаятия с преподавателем, в часах</div>
                         </th>
-                        <th colspan="5" rowspan="2">Трудоемкость ООП (учебная нагрузка)</th>
+                        <th colspan="6" rowspan="2">Трудоемкость ООП (учебная нагрузка)</th>
 
-                        <th colspan="11">Распределение учебного времени по видам учебных занятий</th>
+                        <th colspan="12">Распределение учебного времени по видам учебных занятий</th>
                         <th rowspan="4">
                             <div part="rotated-head">Время, отводимое на самостоятельную работу</div>
                         </th>
@@ -55,6 +55,7 @@ class SyllabusView extends PolymerElement {
                         <th colspan="4">Формы промежуточного и итогового контроля</th>
                     </tr>
                     <tr>
+                        <th rowspan="3" part="rotated-head">лекции</th>
                         <th rowspan="3" part="rotated-head">семинары</th>
                         <th rowspan="3" part="rotated-head">групповые упражнения</th>
                         <th rowspan="3" part="rotated-head">групповые занятия</th>
@@ -73,7 +74,6 @@ class SyllabusView extends PolymerElement {
                         <th colspan="6">5 курс</th>
                         <th rowspan="3" part="rotated-head">экзамены</th>
                         <th colspan="3">зачеты</th>
-
                     </tr>
                     <tr>
                         <th rowspan="2">
@@ -87,6 +87,7 @@ class SyllabusView extends PolymerElement {
                         <th rowspan="2" part="rotated-head">-</th>
                         <th rowspan="2" part="rotated-head">-</th>
                         <th rowspan="2" part="rotated-head">-</th>
+                        <th rowspan="2" part="rotated-head">неизвестный параметр</th>
                         <th colspan="3">1 семестр</th>
                         <th colspan="3">2 семестр</th>
                         <th colspan="3">3 семестр</th>
@@ -137,8 +138,8 @@ class SyllabusView extends PolymerElement {
                     </thead>
                     <tbody>
                     <template is="dom-repeat" items="[[syllabuses]]">
-                        <tr>
-                            <td>{{item.index}}</td>
+                        <tr id="{{item.id}}">
+                            <td><a href="tutor/syllabus/edit/{{item.id}}">{{item.index}}</a></td>
                             <td>{{item.discipline}}</td>
                             <td>{{item.bFertileUnits}}</td>
                             <td>{{item.vFertileUnits}}</td>
@@ -146,12 +147,10 @@ class SyllabusView extends PolymerElement {
                             <td>{{item.hoursWithTeacher}}</td>
                             <td>{{item.fertileUnits}}</td>
                             <td>{{item.totalHours}}</td>
-
-
                             <td></td>
                             <td></td>
                             <td></td>
-
+                            <td>{{item.undefiningParameter}}</td>
                             <td>{{item.lectures}}</td>
                             <td>{{item.seminars}}</td>
                             <td>{{item.groupExercises}}</td>
@@ -159,6 +158,7 @@ class SyllabusView extends PolymerElement {
                             <td>{{item.laboratoryWorks}}</td>
                             <td>{{item.practicalLessons}}</td>
                             <td>{{item.specialLessons}}</td>
+                            <td>{{item.courseWorks}}</td>
                             <td>{{item.conferences}}</td>
                             <td>{{item.practices}}</td>
                             <td>{{item.tests}}</td>
@@ -201,6 +201,12 @@ class SyllabusView extends PolymerElement {
                             <td>{{item.y5s2i}}</td>
                             <td>{{item.y5s2t}}</td>
                             <td>{{item.y5s2s}}</td>
+
+
+                            <td>{{item.examControl}}</td>
+                            <td>{{item.gradedCreditControl}}</td>
+                            <td>{{item.passWithoutAssessmentControl}}</td>
+                            <td>{{item.courseWorkControl}}</td>
                         </tr>
                     </template>
                     </tbody>

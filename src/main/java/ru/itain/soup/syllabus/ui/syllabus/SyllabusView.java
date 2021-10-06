@@ -30,7 +30,6 @@ public class SyllabusView extends PolymerTemplate<SyllabusView.SyllabusViewModel
      */
     public interface SyllabusViewModel extends TemplateModel {
         // Add setters and getters for template properties here.
-
         void setSyllabuses(List<SyllabusRow> syllabuses);
 
         List<SyllabusRow> getSyllabuses();

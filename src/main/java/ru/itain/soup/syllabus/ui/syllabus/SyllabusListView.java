@@ -16,6 +16,7 @@ import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
@@ -25,7 +26,7 @@ import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
 @PageTitle(PAGE_TITLE)
 public class SyllabusListView extends SpecialityListView implements HasUrlParameter<Long> {
     protected Button btnNew = new Button("Добавить");
-    protected Button btnReport = new Button("Отчет");
+    //protected Button btnReport = new Button("Отчет");
     protected SyllabusRepository syllabusRepository;
     private Speciality speciality;
     private SyllabusView grid;
@@ -35,13 +36,13 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         this.syllabusRepository = syllabusRepository;
         init();
         btnNew.addClickListener(e -> {
-            //getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class));
+            getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class, Optional.ofNullable(speciality).map(Speciality::getId).orElse(0L)));
         });
-        btnReport.addClickListener(e -> {
-            if (speciality != null) {
-                //getUI().ifPresent(ui -> ui.navigate(SyllabusReportView.class, speciality.getId()));
-            }
-        });
+//        btnReport.addClickListener(e -> {
+//            if (speciality != null) {
+//                //getUI().ifPresent(ui -> ui.navigate(SyllabusReportView.class, speciality.getId()));
+//            }
+//        });
        /* btnEdit.setEnabled(true);
         btnEdit.addClickListener(e -> {
             btnEdit.getUI().ifPresent(ui -> ui.navigate(EditStudentGroupView.class, entity.getId()));
@@ -66,9 +67,9 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.add(btnNew);
         infoPanel.add(buttons);
-        buttons.add(btnReport);
+//        buttons.add(btnReport);
         buttons.getStyle().set("padding-right", "20px");
-        btnReport.setEnabled(true);
+        //btnReport.setEnabled(true);
         btnNew.setEnabled(true);
     }
 
