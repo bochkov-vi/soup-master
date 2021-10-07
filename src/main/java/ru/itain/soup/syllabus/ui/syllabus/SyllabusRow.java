@@ -1,59 +1,67 @@
 package ru.itain.soup.syllabus.ui.syllabus;
 
+import com.google.common.base.Strings;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.itain.soup.common.dto.VisualEntity;
 import ru.itain.soup.syllabus.dto.entity.StudyYear;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
+@NoArgsConstructor
 public class SyllabusRow {
-    final Integer id;
-    private final Integer seminars;
-    private final Integer groupExercises;
-    private final Integer groupLessons;
-    private final Integer laboratoryWorks;
-    private final Integer practicalLessons;
-    private final Integer specialLessons;
-    private final Integer courseWorks;
-    private final Integer conferences;
-    private final Integer practices;
-    private final Integer tests;
-    private final Integer credit;
-    private final Integer examHours;
-    private final Integer selfTraningHours;
-    private final Double y1s1i;
-    private final Double y1s2i;
-    private final Double y2s1i;
-    private final Double y2s2i;
-    private final Double y3s1i;
-    private final Double y3s2i;
-    private final Double y4s1i;
-    private final Double y4s2i;
-    private final Double y5s1i;
-    private final Double y5s2i;
-    private final Integer y1s1s;
-    private final Integer y1s2s;
-    private final Integer y2s1s;
-    private final Integer y2s2s;
-    private final Integer y3s1s;
-    private final Integer y3s2s;
-    private final Integer y4s1s;
-    private final Integer y4s2s;
-    private final Integer y5s1s;
-    private final Integer y5s2s;
-    private final Integer y1s1t;
-    private final Integer y1s2t;
-    private final Integer y2s1t;
-    private final Integer y2s2t;
-    private final Integer y3s1t;
-    private final Integer y3s2t;
-    private final Integer y4s1t;
-    private final Integer y4s2t;
-    private final Integer y5s1t;
-    private final Integer y5s2t;
+    private Integer id;
+    private Integer seminars;
+    private Integer groupExercises;
+    private Integer groupLessons;
+    private Integer laboratoryWorks;
+    private Integer practicalLessons;
+    private Integer specialLessons;
+    private Integer courseWorks;
+    private Integer conferences;
+    private Integer practices;
+    private Integer tests;
+    private Integer credit;
+    private Integer examHours;
+    private Integer selfTraningHours;
+    private Double y1s1i;
+    private Double y1s2i;
+    private Double y2s1i;
+    private Double y2s2i;
+    private Double y3s1i;
+    private Double y3s2i;
+    private Double y4s1i;
+    private Double y4s2i;
+    private Double y5s1i;
+    private Double y5s2i;
+    private Integer y1s1s;
+    private Integer y1s2s;
+    private Integer y2s1s;
+    private Integer y2s2s;
+    private Integer y3s1s;
+    private Integer y3s2s;
+    private Integer y4s1s;
+    private Integer y4s2s;
+    private Integer y5s1s;
+    private Integer y5s2s;
+    private Integer y1s1t;
+    private Integer y1s2t;
+    private Integer y2s1t;
+    private Integer y2s2t;
+    private Integer y3s1t;
+    private Integer y3s2t;
+    private Integer y4s1t;
+    private Integer y4s2t;
+    private Integer y5s1t;
+    private Integer y5s2t;
 
 
     Double examControl;
@@ -61,11 +69,75 @@ public class SyllabusRow {
     Double passWithoutAssessmentControl;
     Double courseWorkControl;
 
+    static SyllabusRow total(List<SyllabusRow>... data) {
+        SyllabusRow row = new SyllabusRow();
+        List<SyllabusRow> rows = Stream.of(data).flatMap(Collection::stream).collect(Collectors.toList());
+        row.discipline = ("Итого");
+        row.seminars = rows.stream().map(s -> s.seminars).filter(Objects::nonNull).map(v -> v).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.groupExercises = rows.stream().map(s -> s.groupExercises).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.groupLessons = rows.stream().map(s -> s.groupLessons).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.laboratoryWorks = rows.stream().map(s -> s.laboratoryWorks).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.practicalLessons = rows.stream().map(s -> s.practicalLessons).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.specialLessons = rows.stream().map(s -> s.specialLessons).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.courseWorks = rows.stream().map(s -> s.courseWorks).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.conferences = rows.stream().map(s -> s.conferences).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.practices = rows.stream().map(s -> s.practices).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.tests = rows.stream().map(s -> s.tests).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.credit = rows.stream().map(s -> s.credit).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.examHours = rows.stream().map(s -> s.examHours).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.selfTraningHours = rows.stream().map(s -> s.selfTraningHours).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y1s1i = rows.stream().map(s -> s.y1s1i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y1s2i = rows.stream().map(s -> s.y1s2i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y2s1i = rows.stream().map(s -> s.y2s1i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y2s2i = rows.stream().map(s -> s.y2s2i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y3s1i = rows.stream().map(s -> s.y3s1i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y3s2i = rows.stream().map(s -> s.y3s2i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y4s1i = rows.stream().map(s -> s.y4s1i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y4s2i = rows.stream().map(s -> s.y4s2i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y5s1i = rows.stream().map(s -> s.y5s1i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y5s2i = rows.stream().map(s -> s.y5s2i).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.y1s1s = rows.stream().map(s -> s.y1s1s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y1s2s = rows.stream().map(s -> s.y1s2s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y2s1s = rows.stream().map(s -> s.y2s1s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y2s2s = rows.stream().map(s -> s.y2s2s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y3s1s = rows.stream().map(s -> s.y3s1s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y3s2s = rows.stream().map(s -> s.y3s2s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y4s1s = rows.stream().map(s -> s.y4s1s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y4s2s = rows.stream().map(s -> s.y4s2s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y5s1s = rows.stream().map(s -> s.y5s1s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y5s2s = rows.stream().map(s -> s.y5s2s).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y1s1t = rows.stream().map(s -> s.y1s1t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y1s2t = rows.stream().map(s -> s.y1s2t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y2s1t = rows.stream().map(s -> s.y2s1t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y2s2t = rows.stream().map(s -> s.y2s2t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y3s1t = rows.stream().map(s -> s.y3s1t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y3s2t = rows.stream().map(s -> s.y3s2t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y4s1t = rows.stream().map(s -> s.y4s1t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y4s2t = rows.stream().map(s -> s.y4s2t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y5s1t = rows.stream().map(s -> s.y5s1t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.y5s2t = rows.stream().map(s -> s.y5s2t).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.examControl = rows.stream().map(s -> s.examControl).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.gradedCreditControl = rows.stream().map(s -> s.gradedCreditControl).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.passWithoutAssessmentControl = rows.stream().map(s -> s.passWithoutAssessmentControl).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.courseWorkControl = rows.stream().map(s -> s.courseWorkControl).filter(Objects::nonNull).mapToDouble(v -> v).sum();
+        row.bFertileUnits = rows.stream().map(s -> s.bFertileUnits).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.vFertileUnits = rows.stream().map(s -> s.vFertileUnits).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.fertileUnits = rows.stream().map(s -> s.fertileUnits).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.fertileHours = rows.stream().map(s -> s.fertileHours).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.totalHours = rows.stream().map(s -> s.totalHours).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.hoursWithTeacher = rows.stream().map(s -> s.hoursWithTeacher).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.undefiningParameter = rows.stream().map(s -> s.undefiningParameter).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        row.lectures = rows.stream().map(s -> s.lectures).filter(Objects::nonNull).mapToInt(v -> v).sum();
+
+
+        return row;
+    }
+
     SyllabusRow(Syllabus syllabus) {
         Optional<Syllabus> o = Optional.ofNullable(syllabus);
         this.id = new Long(syllabus.getId()).intValue();
         this.index = syllabus.getIndex();
-        if (index == null) {
+        if (Strings.isNullOrEmpty(index)) {
             index = id.toString();
         }
         this.discipline = o.map(Syllabus::getDiscipline).map(VisualEntity::asString).orElse(null);

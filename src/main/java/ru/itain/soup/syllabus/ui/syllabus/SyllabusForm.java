@@ -1,5 +1,6 @@
 package ru.itain.soup.syllabus.ui.syllabus;
 
+import com.google.common.base.Strings;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -14,6 +15,8 @@ import lombok.Getter;
 import ru.itain.soup.common.dto.VisualEntity;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
+import ru.itain.soup.syllabus.dto.entity.SyllabusCategory;
+import ru.itain.soup.syllabus.dto.repository.SyllabusCategoryRepository;
 import ru.itain.soup.syllabus.dto.repository.SyllabusRepository;
 import ru.itain.soup.tool.umm_editor.dto.umm.Discipline;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
@@ -22,17 +25,19 @@ import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 @CssImport(value = "./styles/syllabus-report.css")
 public class SyllabusForm extends FormLayout {
 
-    ComboBox<Discipline> discipline = new ComboBox<>();
+
     DisciplineRepository disciplineRepository;
     Binder<Syllabus> binder = new Binder<>(Syllabus.class);
     @Getter
     Syllabus entity;
     SyllabusRepository repository;
     SpecialityRepository specialityRepository;
+    SyllabusCategoryRepository syllabusCategoryRepository;
 
-    public SyllabusForm(Syllabus entity, SyllabusRepository repository, DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository) {
+    public SyllabusForm(Syllabus entity, SyllabusRepository repository, DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
         this.disciplineRepository = disciplineRepository;
         this.specialityRepository = specialityRepository;
+        this.syllabusCategoryRepository = syllabusCategoryRepository;
         this.entity = entity;
         this.repository = repository;
         getElement().setAttribute("theme", "light");
@@ -42,6 +47,8 @@ public class SyllabusForm extends FormLayout {
     }
 
     public void init() {
+
+
         ComboBox<Speciality> speciality = new ComboBox<>();
         speciality.setItems(specialityRepository.findAll());
         speciality.setRequired(true);
@@ -51,6 +58,16 @@ public class SyllabusForm extends FormLayout {
         binder.forField(speciality).bind(Syllabus::getSpeciality, Syllabus::setSpeciality);
         addFormItem(speciality, "СРЕЦИАЛЬНОСТЬ");
 
+        ComboBox<SyllabusCategory> syllabusCategoryComboBox = new ComboBox<>();
+        syllabusCategoryComboBox.setItems(syllabusCategoryRepository.findAll());
+        syllabusCategoryComboBox.setRequired(true);
+        syllabusCategoryComboBox.setItemLabelGenerator(VisualEntity::asString);
+        syllabusCategoryComboBox.setRequiredIndicatorVisible(true);
+        binder.forField(syllabusCategoryComboBox).bind(Syllabus::getCategory, Syllabus::setCategory);
+        addFormItem(syllabusCategoryComboBox, "РАЗДЕЛ УП");
+
+
+        ComboBox<Discipline> discipline = new ComboBox<>();
         discipline.setItems(disciplineRepository.findAll());
         discipline.setRequired(true);
         discipline.setItemLabelGenerator(VisualEntity::asString);
@@ -180,8 +197,6 @@ public class SyllabusForm extends FormLayout {
         binder.forField(selfStudy2).bind("studyYear1.selfStudyHoursCycle2");
         formLayout.addFormItem(selfStudy2, "ЧАСЫ СР");
 //=====2 year==================================
-
-
 
 
         formLayout = new FormLayout();
@@ -426,8 +441,12 @@ public class SyllabusForm extends FormLayout {
             Notification notification = Notification.show("Не заполнено поле Специальность");
             notification.open();
         }
-        if (entity.getIndex() == null) {
+        if (Strings.isNullOrEmpty(entity.getIndex())) {
             Notification notification = Notification.show("Не заполнено поле Индекс");
+            notification.open();
+        }
+        if (entity.getCategory() == null) {
+            Notification notification = Notification.show("Не заполнено поле Раздел УП");
             notification.open();
         }
         return repository.save(entity);

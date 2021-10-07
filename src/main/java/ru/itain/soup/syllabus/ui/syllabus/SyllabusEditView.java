@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
+import ru.itain.soup.syllabus.dto.repository.SyllabusCategoryRepository;
 import ru.itain.soup.syllabus.dto.repository.SyllabusRepository;
 import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
@@ -25,14 +26,14 @@ import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
 @PageTitle(PAGE_TITLE)
 public class SyllabusEditView extends SpecialityListView implements HasUrlParameter<Long> {
     protected Button btnNew = new Button("Добавить");
-   // protected Button btnReport = new Button("Отчет");
+    // protected Button btnReport = new Button("Отчет");
     protected SyllabusRepository syllabusRepository;
     private Speciality speciality;
     private SyllabusForm form;
 
 
-    public SyllabusEditView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusRepository syllabusRepository) {
-        super(disciplineRepository, specialityRepository);
+    public SyllabusEditView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusRepository syllabusRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
+        super(disciplineRepository, specialityRepository, syllabusCategoryRepository);
         this.syllabusRepository = syllabusRepository;
         init();
         btnNew.setEnabled(false);
@@ -45,7 +46,7 @@ public class SyllabusEditView extends SpecialityListView implements HasUrlParame
 
     private void init() {
 
-        form = new SyllabusForm(null, syllabusRepository, disciplineRepository, specialityRepository);
+        form = new SyllabusForm(null, syllabusRepository, disciplineRepository, specialityRepository, syllabusCategoryRepository);
         setWidth("100%");
 
         HorizontalLayout buttons = new HorizontalLayout();

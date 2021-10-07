@@ -54,14 +54,30 @@ INSERT INTO users.speciality(id, name)
 VALUES (101, 'Спутниковая связь')
 on conflict(id) do update set id=excluded.id,
                               name=excluded.name;
+INSERT INTO syllabus.syllabus_category (id, name)
+VALUES (101, 'ГУМАНИТАРНЫЙ, СОЦИАЛЬНО-ЭКОНОМИЧЕСКИЙ ЦИКЛ')
+on conflict(id) do nothing;
+
 INSERT INTO umm.discipline (id, name)
 VALUES (1001, 'Иностранный язык'),
-       (1002, 'История')
+       (1002, 'История'),
+       (1003, 'Философия'),
+       (1004, 'Правоведение'),
+       (1005, 'Военная история'),
+       (1006, 'Психология и педагогика'),
+       (1007, 'Основы информационного обеспечения военной деятельности и связей с общественностью'),
+       (1008, 'Организация работы с личным составом ВС РФ и МПО деятельности войск (сил)'),
+       (1009, 'Политология'),
+       (1010, 'Социология')
+
+
 on conflict (id) do update set id=excluded.id,
                                name=excluded.name;
 
+delete from syllabus.syllabus where id in(1003);
 
-INSERT INTO syllabus.syllabus (id, speciality_id, index, discipline_id, base, fertile_units, undefining_parameter,
+INSERT INTO syllabus.syllabus (id, syllabus_category_id, speciality_id, index, discipline_id, base, fertile_units,
+                               undefining_parameter,
                                lectures,
                                seminars, group_exercises, group_lessons, laboratory_works, practical_lessons,
                                special_lessons, course_works, conferences, practices, tests, credit,
@@ -77,8 +93,13 @@ INSERT INTO syllabus.syllabus (id, speciality_id, index, discipline_id, base, fe
                                year5_cycle2_intensity, year5_cycle2_training_hours, year5_cycle2_self_study_hours,
                                exam_control,
                                graded_credit_control, pass_without_assessment_control, course_work_control)
-VALUES (10001, 101, 'Ц.1.Б.1', 1001, true, 10, 1, 0, 0, 0, 0, 0, 194, 0, 0, 0, 0, 10, 12, 1.5, 36, 18, 2, 48, 24, 1.5,
+VALUES (10001, 101, 101, 'Ц.1.Б.1', 1001, true, 10, 1, 0, 0, 0, 0, 0, 194, 0, 0, 0, 0, 10, 12, 1.5, 36, 18, 2, 48, 24,
+        1.5,
         36, 18, 2, 48, 24, 3, 54, 54, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 2.4, 1.3, 0),
-       (10002, 101, 'Ц.1.Б.2', 1002, true, 3, 0, 36,30, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 1.5, 36, 18, 1.5, 36, 18, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0)
+       (10002, 101, 101, 'Ц.1.Б.2', 1002, true, 3, 0, 36, 30, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 1.5, 36, 18, 1.5, 36, 18, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0),
+       (10003, 101, 101, 'Ц.1.Б.3', 1003, true, 3, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1.5, 36, 18, 1.5, 36, 18,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0),
+       (10004, 101, 101, 'Ц.1.Б.4', 1004, true, 5, 1, 44, 30, 0, 0, 0, 18, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 48, 24, 3, 54, 54, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0)
 on conflict do nothing;

@@ -27,6 +27,11 @@ public class Syllabus extends BaseEntity implements VisualEntity {
     @JoinColumn(name = "discipline_id")
     private Discipline discipline;
 
+    @ManyToOne
+    @JoinColumn(name = "syllabus_category_id")
+    private SyllabusCategory category;
+
+
     private String index;
 
     private int fertileUnits;//зачетные еденицы
@@ -131,15 +136,19 @@ public class Syllabus extends BaseEntity implements VisualEntity {
     public StudyYear getStudyYear1() {
         return studyYear1 != null ? studyYear1 : new StudyYear();
     }
+
     public StudyYear getStudyYear2() {
-        return studyYear2 != null ? studyYear2: new StudyYear();
+        return studyYear2 != null ? studyYear2 : new StudyYear();
     }
+
     public StudyYear getStudyYear3() {
         return studyYear3 != null ? studyYear3 : new StudyYear();
     }
+
     public StudyYear getStudyYear4() {
         return studyYear4 != null ? studyYear4 : new StudyYear();
     }
+
     public StudyYear getStudyYear5() {
         return studyYear5 != null ? studyYear5 : new StudyYear();
     }

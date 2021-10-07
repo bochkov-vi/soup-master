@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
 import ru.itain.soup.syllabus.dto.entity.Syllabus;
+import ru.itain.soup.syllabus.dto.repository.SyllabusCategoryRepository;
 import ru.itain.soup.syllabus.dto.repository.SyllabusRepository;
 import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
@@ -30,8 +31,8 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
     private Speciality speciality;
     private SyllabusForm form;
 
-    public SyllabusAddView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusRepository syllabusRepository) {
-        super(disciplineRepository, specialityRepository);
+    public SyllabusAddView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusRepository syllabusRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
+        super(disciplineRepository, specialityRepository,syllabusCategoryRepository);
         this.syllabusRepository = syllabusRepository;
         init();
         btnNew.setEnabled(false);
@@ -44,7 +45,7 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
 
     private void init() {
 
-        form = new SyllabusForm(new Syllabus(), syllabusRepository, disciplineRepository, specialityRepository);
+        form = new SyllabusForm(new Syllabus(), syllabusRepository, disciplineRepository, specialityRepository,syllabusCategoryRepository);
         setWidth("100%");
 
         HorizontalLayout buttons = new HorizontalLayout();

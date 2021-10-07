@@ -3,7 +3,6 @@ package ru.itain.soup.syllabus.ui.syllabus;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 import java.util.List;
@@ -30,16 +29,16 @@ public class SyllabusView extends PolymerTemplate<SyllabusView.SyllabusViewModel
      */
     public interface SyllabusViewModel extends TemplateModel {
         // Add setters and getters for template properties here.
-        void setSyllabuses(List<SyllabusRow> syllabuses);
+        void setBlocks(List<SyllabusBlock> syllabuses);
 
-        List<SyllabusRow> getSyllabuses();
+        List<SyllabusBlock> getBlocks();
     }
 
-    public void setSyllabuses(List<SyllabusRow> syllabuses) {
-        getModel().setSyllabuses(syllabuses);
+    public void setBlocks(List<SyllabusBlock> blocks) {
+        getModel().setBlocks(blocks);
     }
 
-    public List<SyllabusRow> getSyllabuses() {
-        return getModel().getSyllabuses();
+    public List<SyllabusBlock> getBlocks() {
+        return getModel().getBlocks();
     }
 }

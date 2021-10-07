@@ -137,76 +137,224 @@ class SyllabusView extends PolymerElement {
                     </tr>
                     </thead>
                     <tbody>
-                    <template is="dom-repeat" items="[[syllabuses]]">
-                        <tr id="{{item.id}}">
-                            <td><a href="tutor/syllabus/edit/{{item.id}}">{{item.index}}</a></td>
-                            <td>{{item.discipline}}</td>
-                            <td>{{item.bFertileUnits}}</td>
-                            <td>{{item.vFertileUnits}}</td>
-                            <td>{{item.totalHours}}</td>
-                            <td>{{item.hoursWithTeacher}}</td>
-                            <td>{{item.fertileUnits}}</td>
-                            <td>{{item.totalHours}}</td>
+                    <template is="dom-repeat" items="{{blocks}}" as="block">
+                        <tr>
+                            <td colspan="58">{{block.head}}</td>
+                        </tr>
+                        <template is="dom-repeat" items="{{block.articles}}" as="article">
+                            <tr>
+                                <td colspan="58">{{article.head}}</td>
+                            </tr>
+                            <template is="dom-repeat" items="{{article.rows}}" as="item">
+                                <tr id="{{item.id}}">
+                                    <td><a href="tutor/syllabus/edit/{{item.id}}">{{item.index}}</a></td>
+                                    <td>{{item.discipline}}</td>
+                                    <td>{{item.bFertileUnits}}</td>
+                                    <td>{{item.vFertileUnits}}</td>
+                                    <td>{{item.totalHours}}</td>
+                                    <td>{{item.hoursWithTeacher}}</td>
+                                    <td>{{item.fertileUnits}}</td>
+                                    <td>{{item.totalHours}}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{item.undefiningParameter}}</td>
+                                    <td>{{item.lectures}}</td>
+                                    <td>{{item.seminars}}</td>
+                                    <td>{{item.groupExercises}}</td>
+                                    <td>{{item.groupLessons}}</td>
+                                    <td>{{item.laboratoryWorks}}</td>
+                                    <td>{{item.practicalLessons}}</td>
+                                    <td>{{item.specialLessons}}</td>
+                                    <td>{{item.courseWorks}}</td>
+                                    <td>{{item.conferences}}</td>
+                                    <td>{{item.practices}}</td>
+                                    <td>{{item.tests}}</td>
+                                    <td>{{item.credit}}</td>
+                                    <td>{{item.selfTraningHours}}</td>
+                                    <td>{{item.examHours}}</td>
+
+
+                                    <td>{{item.y1s1i}}</td>
+                                    <td>{{item.y1s1t}}</td>
+                                    <td>{{item.y1s1s}}</td>
+                                    <td>{{item.y1s2i}}</td>
+                                    <td>{{item.y1s2t}}</td>
+                                    <td>{{item.y1s2s}}</td>
+
+                                    <td>{{item.y2s1i}}</td>
+                                    <td>{{item.y2s1t}}</td>
+                                    <td>{{item.y2s1s}}</td>
+                                    <td>{{item.y2s2i}}</td>
+                                    <td>{{item.y2s2t}}</td>
+                                    <td>{{item.y2s2s}}</td>
+
+                                    <td>{{item.y3s1i}}</td>
+                                    <td>{{item.y3s1t}}</td>
+                                    <td>{{item.y3s1s}}</td>
+                                    <td>{{item.y3s2i}}</td>
+                                    <td>{{item.y3s2t}}</td>
+                                    <td>{{item.y3s2s}}</td>
+
+                                    <td>{{item.y4s1i}}</td>
+                                    <td>{{item.y4s1t}}</td>
+                                    <td>{{item.y4s1s}}</td>
+                                    <td>{{item.y4s2i}}</td>
+                                    <td>{{item.y4s2t}}</td>
+                                    <td>{{item.y4s2s}}</td>
+
+                                    <td>{{item.y5s1i}}</td>
+                                    <td>{{item.y5s1t}}</td>
+                                    <td>{{item.y5s1s}}</td>
+                                    <td>{{item.y5s2i}}</td>
+                                    <td>{{item.y5s2t}}</td>
+                                    <td>{{item.y5s2s}}</td>
+
+
+                                    <td>{{item.examControl}}</td>
+                                    <td>{{item.gradedCreditControl}}</td>
+                                    <td>{{item.passWithoutAssessmentControl}}</td>
+                                    <td>{{item.courseWorkControl}}</td>
+                                </tr>
+                            </template>
+                            <tr>
+                                <th colspan="2">{{article.total.discipline}}</th>
+                                <td>{{article.total.bFertileUnits}}</td>
+                                <td>{{article.total.vFertileUnits}}</td>
+                                <td>{{article.total.totalHours}}</td>
+                                <td>{{article.total.hoursWithTeacher}}</td>
+                                <td>{{article.total.fertileUnits}}</td>
+                                <td>{{article.total.totalHours}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{article.total.undefiningParameter}}</td>
+                                <td>{{article.total.lectures}}</td>
+                                <td>{{article.total.seminars}}</td>
+                                <td>{{article.total.groupExercises}}</td>
+                                <td>{{article.total.groupLessons}}</td>
+                                <td>{{article.total.laboratoryWorks}}</td>
+                                <td>{{article.total.practicalLessons}}</td>
+                                <td>{{article.total.specialLessons}}</td>
+                                <td>{{article.total.courseWorks}}</td>
+                                <td>{{article.total.conferences}}</td>
+                                <td>{{article.total.practices}}</td>
+                                <td>{{article.total.tests}}</td>
+                                <td>{{article.total.credit}}</td>
+                                <td>{{article.total.selfTraningHours}}</td>
+                                <td>{{article.total.examHours}}</td>
+
+
+                                <td>{{article.total.y1s1i}}</td>
+                                <td>{{article.total.y1s1t}}</td>
+                                <td>{{article.total.y1s1s}}</td>
+                                <td>{{article.total.y1s2i}}</td>
+                                <td>{{article.total.y1s2t}}</td>
+                                <td>{{article.total.y1s2s}}</td>
+
+                                <td>{{article.total.y2s1i}}</td>
+                                <td>{{article.total.y2s1t}}</td>
+                                <td>{{article.total.y2s1s}}</td>
+                                <td>{{article.total.y2s2i}}</td>
+                                <td>{{article.total.y2s2t}}</td>
+                                <td>{{article.total.y2s2s}}</td>
+
+                                <td>{{article.total.y3s1i}}</td>
+                                <td>{{article.total.y3s1t}}</td>
+                                <td>{{article.total.y3s1s}}</td>
+                                <td>{{article.total.y3s2i}}</td>
+                                <td>{{article.total.y3s2t}}</td>
+                                <td>{{article.total.y3s2s}}</td>
+
+                                <td>{{article.total.y4s1i}}</td>
+                                <td>{{article.total.y4s1t}}</td>
+                                <td>{{article.total.y4s1s}}</td>
+                                <td>{{article.total.y4s2i}}</td>
+                                <td>{{article.total.y4s2t}}</td>
+                                <td>{{article.total.y4s2s}}</td>
+
+                                <td>{{article.total.y5s1i}}</td>
+                                <td>{{article.total.y5s1t}}</td>
+                                <td>{{article.total.y5s1s}}</td>
+                                <td>{{article.total.y5s2i}}</td>
+                                <td>{{article.total.y5s2t}}</td>
+                                <td>{{article.total.y5s2s}}</td>
+
+
+                                <td>{{article.total.examControl}}</td>
+                                <td>{{article.total.gradedCreditControl}}</td>
+                                <td>{{article.total.passWithoutAssessmentControl}}</td>
+                                <td>{{article.total.courseWorkControl}}</td>
+                            </tr>
+                        </template>
+                        <tr>
+                            <th colspan="2">{{block.total.discipline}}</th>
+                            <td>{{block.total.bFertileUnits}}</td>
+                            <td>{{block.total.vFertileUnits}}</td>
+                            <td>{{block.total.totalHours}}</td>
+                            <td>{{block.total.hoursWithTeacher}}</td>
+                            <td>{{block.total.fertileUnits}}</td>
+                            <td>{{block.total.totalHours}}</td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{item.undefiningParameter}}</td>
-                            <td>{{item.lectures}}</td>
-                            <td>{{item.seminars}}</td>
-                            <td>{{item.groupExercises}}</td>
-                            <td>{{item.groupLessons}}</td>
-                            <td>{{item.laboratoryWorks}}</td>
-                            <td>{{item.practicalLessons}}</td>
-                            <td>{{item.specialLessons}}</td>
-                            <td>{{item.courseWorks}}</td>
-                            <td>{{item.conferences}}</td>
-                            <td>{{item.practices}}</td>
-                            <td>{{item.tests}}</td>
-                            <td>{{item.credit}}</td>
-                            <td>{{item.selfTraningHours}}</td>
-                            <td>{{item.examHours}}</td>
+                            <td>{{block.total.undefiningParameter}}</td>
+                            <td>{{block.total.lectures}}</td>
+                            <td>{{block.total.seminars}}</td>
+                            <td>{{block.total.groupExercises}}</td>
+                            <td>{{block.total.groupLessons}}</td>
+                            <td>{{block.total.laboratoryWorks}}</td>
+                            <td>{{block.total.practicalLessons}}</td>
+                            <td>{{block.total.specialLessons}}</td>
+                            <td>{{block.total.courseWorks}}</td>
+                            <td>{{block.total.conferences}}</td>
+                            <td>{{block.total.practices}}</td>
+                            <td>{{block.total.tests}}</td>
+                            <td>{{block.total.credit}}</td>
+                            <td>{{block.total.selfTraningHours}}</td>
+                            <td>{{block.total.examHours}}</td>
 
 
-                            <td>{{item.y1s1i}}</td>
-                            <td>{{item.y1s1t}}</td>
-                            <td>{{item.y1s1s}}</td>
-                            <td>{{item.y1s2i}}</td>
-                            <td>{{item.y1s2t}}</td>
-                            <td>{{item.y1s2s}}</td>
+                            <td>{{block.total.y1s1i}}</td>
+                            <td>{{block.total.y1s1t}}</td>
+                            <td>{{block.total.y1s1s}}</td>
+                            <td>{{block.total.y1s2i}}</td>
+                            <td>{{block.total.y1s2t}}</td>
+                            <td>{{block.total.y1s2s}}</td>
 
-                            <td>{{item.y2s1i}}</td>
-                            <td>{{item.y2s1t}}</td>
-                            <td>{{item.y2s1s}}</td>
-                            <td>{{item.y2s2i}}</td>
-                            <td>{{item.y2s2t}}</td>
-                            <td>{{item.y2s2s}}</td>
+                            <td>{{block.total.y2s1i}}</td>
+                            <td>{{block.total.y2s1t}}</td>
+                            <td>{{block.total.y2s1s}}</td>
+                            <td>{{block.total.y2s2i}}</td>
+                            <td>{{block.total.y2s2t}}</td>
+                            <td>{{block.total.y2s2s}}</td>
 
-                            <td>{{item.y3s1i}}</td>
-                            <td>{{item.y3s1t}}</td>
-                            <td>{{item.y3s1s}}</td>
-                            <td>{{item.y3s2i}}</td>
-                            <td>{{item.y3s2t}}</td>
-                            <td>{{item.y3s2s}}</td>
+                            <td>{{block.total.y3s1i}}</td>
+                            <td>{{block.total.y3s1t}}</td>
+                            <td>{{block.total.y3s1s}}</td>
+                            <td>{{block.total.y3s2i}}</td>
+                            <td>{{block.total.y3s2t}}</td>
+                            <td>{{block.total.y3s2s}}</td>
 
-                            <td>{{item.y4s1i}}</td>
-                            <td>{{item.y4s1t}}</td>
-                            <td>{{item.y4s1s}}</td>
-                            <td>{{item.y4s2i}}</td>
-                            <td>{{item.y4s2t}}</td>
-                            <td>{{item.y4s2s}}</td>
+                            <td>{{block.total.y4s1i}}</td>
+                            <td>{{block.total.y4s1t}}</td>
+                            <td>{{block.total.y4s1s}}</td>
+                            <td>{{block.total.y4s2i}}</td>
+                            <td>{{block.total.y4s2t}}</td>
+                            <td>{{block.total.y4s2s}}</td>
 
-                            <td>{{item.y5s1i}}</td>
-                            <td>{{item.y5s1t}}</td>
-                            <td>{{item.y5s1s}}</td>
-                            <td>{{item.y5s2i}}</td>
-                            <td>{{item.y5s2t}}</td>
-                            <td>{{item.y5s2s}}</td>
+                            <td>{{block.total.y5s1i}}</td>
+                            <td>{{block.total.y5s1t}}</td>
+                            <td>{{block.total.y5s1s}}</td>
+                            <td>{{block.total.y5s2i}}</td>
+                            <td>{{block.total.y5s2t}}</td>
+                            <td>{{block.total.y5s2s}}</td>
 
 
-                            <td>{{item.examControl}}</td>
-                            <td>{{item.gradedCreditControl}}</td>
-                            <td>{{item.passWithoutAssessmentControl}}</td>
-                            <td>{{item.courseWorkControl}}</td>
+                            <td>{{block.total.examControl}}</td>
+                            <td>{{block.total.gradedCreditControl}}</td>
+                            <td>{{block.total.passWithoutAssessmentControl}}</td>
+                            <td>{{block.total.courseWorkControl}}</td>
                         </tr>
                     </template>
                     </tbody>

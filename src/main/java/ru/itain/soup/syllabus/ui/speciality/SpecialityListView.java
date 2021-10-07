@@ -18,16 +18,16 @@ import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.component.SoupElementEditDialog;
 import ru.itain.soup.common.ui.view.tutor.CommonView;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
+import ru.itain.soup.syllabus.dto.entity.SyllabusCategory;
+import ru.itain.soup.syllabus.dto.repository.SyllabusCategoryRepository;
 import ru.itain.soup.syllabus.ui.syllabus.SyllabusListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Discipline;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Secured("ROLE_TUTOR")
@@ -38,13 +38,14 @@ public class SpecialityListView extends CommonView {
     protected Map<Long, Tab> navigationTargetToTab = new HashMap<>();
     protected DisciplineRepository disciplineRepository;
     protected SpecialityRepository specialityRepository;
-
+    protected SyllabusCategoryRepository syllabusCategoryRepository;
     protected Tabs specialityList;
     private final Button btnEditSpeciality = new Button("+/-Специальность");
 
-    public SpecialityListView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository) {
+    public SpecialityListView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
         this.disciplineRepository = disciplineRepository;
         this.specialityRepository = specialityRepository;
+        this.syllabusCategoryRepository = syllabusCategoryRepository;
         initPage();
     }
 
@@ -154,9 +155,24 @@ public class SpecialityListView extends CommonView {
         mainLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         mainLayout.add(btnEditSpeciality);
         btnEditSpeciality.addClickListener(e -> openSpecialityEditDialog());
+
+        Button btnEditDiscipline = new Button("+/-Дисциплина");
+        mainLayout.add(btnEditDiscipline);
+        btnEditDiscipline.addClickListener(e -> openDisciplineEditDialog());
+
+        Button btnEditCategory = new Button("+/-Раздел УП");
+        mainLayout.add(btnEditCategory);
+        btnEditCategory.addClickListener(e -> openSyllabusCategoryEditDialog());
         return mainLayout;
     }
 
+    public void disciplineListUpdated() {
+
+    }
+
+    public void syllabusCategoryListUpdated() {
+
+    }
 
     private void openSpecialityEditDialog() {
         new SoupElementEditDialog<Speciality>(Lists.newArrayList(specialityRepository.findAll()), "Редактирование специальностей") {
@@ -184,6 +200,72 @@ public class SpecialityListView extends CommonView {
             @Override
             protected Speciality getNewElement() {
                 return new Speciality("Новая специальность");
+            }
+        };
+    }
+
+    private void openDisciplineEditDialog() {
+        List<Discipline> disciplines = disciplineRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparingLong(Discipline::getId))
+                .collect(Collectors.toList());
+        new SoupElementEditDialog<Discipline>(disciplines, "Редактирование дисциплины") {
+            @Override
+            protected void updateElementList() {
+                disciplineListUpdated();
+            }
+
+            @Override
+            protected void delete(Discipline discipline) {
+                disciplineRepository.delete(discipline);
+            }
+
+            @Override
+            protected void save(Discipline discipline) {
+                disciplineRepository.save(discipline);
+            }
+
+            @Override
+            protected void rename(Discipline discipline, String rename) {
+                discipline.setName(rename);
+            }
+
+            @Override
+            protected Discipline getNewElement() {
+                return new Discipline("Новая дисциплина");
+            }
+        };
+    }
+
+    private void openSyllabusCategoryEditDialog() {
+        List<SyllabusCategory> categories = syllabusCategoryRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparingLong(SyllabusCategory::getId))
+                .collect(Collectors.toList());
+        new SoupElementEditDialog<SyllabusCategory>(categories, "Редактирование раздела учебного плана") {
+            @Override
+            protected void updateElementList() {
+                syllabusCategoryListUpdated();
+            }
+
+            @Override
+            protected void delete(SyllabusCategory category) {
+                syllabusCategoryRepository.delete(category);
+            }
+
+            @Override
+            protected void save(SyllabusCategory category) {
+                syllabusCategoryRepository.save(category);
+            }
+
+            @Override
+            protected void rename(SyllabusCategory category, String rename) {
+                category.setName(rename);
+            }
+
+            @Override
+            protected SyllabusCategory getNewElement() {
+                return new SyllabusCategory("Новый раздел");
             }
         };
     }
