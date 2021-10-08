@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -51,7 +52,11 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
 
         grid = new SyllabusView();
         setWidth("100%");
-        center.add(grid);
+
+        Div innerBlock = new Div();
+        innerBlock.setClassName("soup-add-tutor-inner-block");
+        innerBlock.add(grid);
+        center.add(innerBlock);
 
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.add(btnNew);
