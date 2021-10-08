@@ -32,7 +32,7 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
     private SyllabusForm form;
 
     public SyllabusAddView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusRepository syllabusRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
-        super(disciplineRepository, specialityRepository,syllabusCategoryRepository);
+        super(disciplineRepository, specialityRepository, syllabusCategoryRepository);
         this.syllabusRepository = syllabusRepository;
         init();
         btnNew.setEnabled(false);
@@ -45,7 +45,7 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
 
     private void init() {
 
-        form = new SyllabusForm(new Syllabus(), syllabusRepository, disciplineRepository, specialityRepository,syllabusCategoryRepository);
+        form = new SyllabusForm(new Syllabus(), syllabusRepository, disciplineRepository, specialityRepository, syllabusCategoryRepository);
         setWidth("100%");
 
         HorizontalLayout buttons = new HorizontalLayout();
@@ -65,9 +65,19 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
         createButtons(innerBlock);
     }
 
-    boolean saveSyllabus(Syllabus syllabus) {
-        syllabusRepository.save(syllabus);
-        return true;
+    @Override
+    public void disciplineListUpdated() {
+        form.disciplineListUpdated();
+    }
+
+    @Override
+    public void syllabusCategoryListUpdated() {
+        form.syllabusCategoryListUpdated();
+    }
+
+    @Override
+    public void specialityListUpdated() {
+        form.specialityListUpdated();
     }
 
     private void createButtons(Div innerBlock) {
@@ -95,7 +105,11 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
 
     @Override
     public void setParameter(BeforeEvent event, Long parameter) {
-        Optional.ofNullable(parameter).flatMap(id -> specialityRepository.findById(id)).ifPresent(s -> this.form.setSpeciality(s));
+        Optional<Speciality> optional = Optional.ofNullable(parameter).flatMap(id -> specialityRepository.findById(id));
+        optional.ifPresent(s -> {
+            this.form.setSpeciality(s);
+            this.speciality = s;
+        });
 
     }
 }

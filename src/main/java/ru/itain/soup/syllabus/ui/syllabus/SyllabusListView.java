@@ -111,9 +111,9 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
                 block.setTotal(SyllabusRow.total(articles.stream().flatMap(a -> a.getRows().stream()).collect(Collectors.toList())));
                 blocks.add(block);
             }
-
         }
         grid.setBlocks(blocks);
+        grid.setTotal(SyllabusRow.total(blocks.stream().flatMap(b -> b.getArticles().stream()).flatMap(a -> a.getRows().stream()).collect(Collectors.toList())));
     }
 
 }

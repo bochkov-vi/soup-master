@@ -126,7 +126,7 @@ public class SyllabusRow {
         row.fertileHours = rows.stream().map(s -> s.fertileHours).filter(Objects::nonNull).mapToInt(v -> v).sum();
         row.totalHours = rows.stream().map(s -> s.totalHours).filter(Objects::nonNull).mapToInt(v -> v).sum();
         row.hoursWithTeacher = rows.stream().map(s -> s.hoursWithTeacher).filter(Objects::nonNull).mapToInt(v -> v).sum();
-        row.undefiningParameter = rows.stream().map(s -> s.undefiningParameter).filter(Objects::nonNull).mapToInt(v -> v).sum();
+        //row.undefiningParameter = rows.stream().map(s -> s.undefiningParameter).filter(Objects::nonNull).mapToInt(v -> v).sum();
         row.lectures = rows.stream().map(s -> s.lectures).filter(Objects::nonNull).mapToInt(v -> v).sum();
 
 

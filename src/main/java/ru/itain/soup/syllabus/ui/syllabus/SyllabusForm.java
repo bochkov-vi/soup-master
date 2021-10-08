@@ -33,6 +33,10 @@ public class SyllabusForm extends FormLayout {
     SyllabusRepository repository;
     SpecialityRepository specialityRepository;
     SyllabusCategoryRepository syllabusCategoryRepository;
+    ComboBox<Speciality> speciality = new ComboBox<>();
+    ComboBox<SyllabusCategory> syllabusCategoryComboBox = new ComboBox<>();
+    ComboBox<Discipline> discipline = new ComboBox<>();
+
 
     public SyllabusForm(Syllabus entity, SyllabusRepository repository, DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
         this.disciplineRepository = disciplineRepository;
@@ -46,10 +50,21 @@ public class SyllabusForm extends FormLayout {
         init();
     }
 
+
+    public void disciplineListUpdated() {
+        this.discipline.setItems(disciplineRepository.findAll());
+    }
+
+
+    public void syllabusCategoryListUpdated() {
+        this.syllabusCategoryComboBox.setItems(syllabusCategoryRepository.findAll());
+    }
+
+    public void specialityListUpdated() {
+        this.speciality.setItems(specialityRepository.findAll());
+    }
+
     public void init() {
-
-
-        ComboBox<Speciality> speciality = new ComboBox<>();
         speciality.setItems(specialityRepository.findAll());
         speciality.setRequired(true);
         speciality.setItemLabelGenerator(VisualEntity::asString);
@@ -58,7 +73,7 @@ public class SyllabusForm extends FormLayout {
         binder.forField(speciality).bind(Syllabus::getSpeciality, Syllabus::setSpeciality);
         addFormItem(speciality, "СРЕЦИАЛЬНОСТЬ");
 
-        ComboBox<SyllabusCategory> syllabusCategoryComboBox = new ComboBox<>();
+
         syllabusCategoryComboBox.setItems(syllabusCategoryRepository.findAll());
         syllabusCategoryComboBox.setRequired(true);
         syllabusCategoryComboBox.setItemLabelGenerator(VisualEntity::asString);
@@ -67,7 +82,6 @@ public class SyllabusForm extends FormLayout {
         addFormItem(syllabusCategoryComboBox, "РАЗДЕЛ УП");
 
 
-        ComboBox<Discipline> discipline = new ComboBox<>();
         discipline.setItems(disciplineRepository.findAll());
         discipline.setRequired(true);
         discipline.setItemLabelGenerator(VisualEntity::asString);
@@ -96,7 +110,7 @@ public class SyllabusForm extends FormLayout {
         index.setRequired(true);
         index.setRequiredIndicatorVisible(true);
         binder.forField(unknown).bind(Syllabus::getUndefiningParameter, Syllabus::setUndefiningParameter);
-        addFormItem(unknown, "НЕИЗВЕСТНЫЙ КООФ.-Т");
+        addFormItem(unknown, "ВЕСОВОЙ КОЭФФИЦИЕНТ");
 
 
         FormLayout formLayout = new FormLayout();

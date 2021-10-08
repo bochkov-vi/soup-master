@@ -31,7 +31,11 @@ public class SyllabusView extends PolymerTemplate<SyllabusView.SyllabusViewModel
         // Add setters and getters for template properties here.
         void setBlocks(List<SyllabusBlock> syllabuses);
 
+        void setTotal(SyllabusRow row);
+
         List<SyllabusBlock> getBlocks();
+
+        SyllabusRow getTotal();
     }
 
     public void setBlocks(List<SyllabusBlock> blocks) {
@@ -40,5 +44,13 @@ public class SyllabusView extends PolymerTemplate<SyllabusView.SyllabusViewModel
 
     public List<SyllabusBlock> getBlocks() {
         return getModel().getBlocks();
+    }
+
+    public void setTotal(SyllabusRow row) {
+        getModel().setTotal(row);
+    }
+
+    public SyllabusRow getTotal() {
+        return getModel().getTotal();
     }
 }

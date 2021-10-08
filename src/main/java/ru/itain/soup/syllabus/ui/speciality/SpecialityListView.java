@@ -174,12 +174,17 @@ public class SpecialityListView extends CommonView {
 
     }
 
+    public void specialityListUpdated() {
+
+    }
+
     private void openSpecialityEditDialog() {
         new SoupElementEditDialog<Speciality>(Lists.newArrayList(specialityRepository.findAll()), "Редактирование специальностей") {
             @Override
             protected void updateElementList() {
                 updateSpecialities();
                 fillTabs();
+                specialityListUpdated();
             }
 
             @Override

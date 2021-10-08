@@ -41,7 +41,7 @@ class SyllabusView extends PolymerElement {
                         <th rowspan="4">
                             <div part="rotated-head">Учебные занаятия с преподавателем, в часах</div>
                         </th>
-                        <th colspan="6" rowspan="2">Трудоемкость ООП (учебная нагрузка)</th>
+                        <th colspan="3" rowspan="2">Трудоемкость ООП (учебная нагрузка)</th>
 
                         <th colspan="12">Распределение учебного времени по видам учебных занятий</th>
                         <th rowspan="4">
@@ -84,10 +84,7 @@ class SyllabusView extends PolymerElement {
                         </th>
                         <th rowspan="2" part="rotated-head">зачетные единицы</th>
                         <th rowspan="2" part="rotated-head">часы</th>
-                        <th rowspan="2" part="rotated-head">-</th>
-                        <th rowspan="2" part="rotated-head">-</th>
-                        <th rowspan="2" part="rotated-head">-</th>
-                        <th rowspan="2" part="rotated-head">неизвестный параметр</th>
+                        <th rowspan="2" part="rotated-head">Весовой коэффициент</th>
                         <th colspan="3">1 семестр</th>
                         <th colspan="3">2 семестр</th>
                         <th colspan="3">3 семестр</th>
@@ -139,11 +136,11 @@ class SyllabusView extends PolymerElement {
                     <tbody>
                     <template is="dom-repeat" items="{{blocks}}" as="block">
                         <tr>
-                            <td colspan="58">{{block.head}}</td>
+                            <th colspan="58">{{block.head}}</th>
                         </tr>
                         <template is="dom-repeat" items="{{block.articles}}" as="article">
                             <tr>
-                                <td colspan="58">{{article.head}}</td>
+                                <th colspan="58">{{article.head}}</th>
                             </tr>
                             <template is="dom-repeat" items="{{article.rows}}" as="item">
                                 <tr id="{{item.id}}">
@@ -155,9 +152,6 @@ class SyllabusView extends PolymerElement {
                                     <td>{{item.hoursWithTeacher}}</td>
                                     <td>{{item.fertileUnits}}</td>
                                     <td>{{item.totalHours}}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
                                     <td>{{item.undefiningParameter}}</td>
                                     <td>{{item.lectures}}</td>
                                     <td>{{item.seminars}}</td>
@@ -211,10 +205,10 @@ class SyllabusView extends PolymerElement {
                                     <td>{{item.y5s2s}}</td>
 
 
-                                    <td>{{item.examControl}}</td>
-                                    <td>{{item.gradedCreditControl}}</td>
-                                    <td>{{item.passWithoutAssessmentControl}}</td>
-                                    <td>{{item.courseWorkControl}}</td>
+                                    <th>{{item.examControl}}</th>
+                                    <th>{{item.gradedCreditControl}}</th>
+                                    <th>{{item.passWithoutAssessmentControl}}</th>
+                                    <th>{{item.courseWorkControl}}</th>
                                 </tr>
                             </template>
                             <tr>
@@ -225,9 +219,7 @@ class SyllabusView extends PolymerElement {
                                 <td>{{article.total.hoursWithTeacher}}</td>
                                 <td>{{article.total.fertileUnits}}</td>
                                 <td>{{article.total.totalHours}}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+
                                 <td>{{article.total.undefiningParameter}}</td>
                                 <td>{{article.total.lectures}}</td>
                                 <td>{{article.total.seminars}}</td>
@@ -281,82 +273,145 @@ class SyllabusView extends PolymerElement {
                                 <td>{{article.total.y5s2s}}</td>
 
 
-                                <td>{{article.total.examControl}}</td>
-                                <td>{{article.total.gradedCreditControl}}</td>
-                                <td>{{article.total.passWithoutAssessmentControl}}</td>
-                                <td>{{article.total.courseWorkControl}}</td>
+                                <th>{{article.total.examControl}}</th>
+                                <th>{{article.total.gradedCreditControl}}</th>
+                                <th>{{article.total.passWithoutAssessmentControl}}</th>
+                                <th>{{article.total.courseWorkControl}}</th>
                             </tr>
                         </template>
                         <tr>
-                            <th colspan="2">{{block.total.discipline}}</th>
-                            <td>{{block.total.bFertileUnits}}</td>
-                            <td>{{block.total.vFertileUnits}}</td>
-                            <td>{{block.total.totalHours}}</td>
-                            <td>{{block.total.hoursWithTeacher}}</td>
-                            <td>{{block.total.fertileUnits}}</td>
-                            <td>{{block.total.totalHours}}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{block.total.undefiningParameter}}</td>
-                            <td>{{block.total.lectures}}</td>
-                            <td>{{block.total.seminars}}</td>
-                            <td>{{block.total.groupExercises}}</td>
-                            <td>{{block.total.groupLessons}}</td>
-                            <td>{{block.total.laboratoryWorks}}</td>
-                            <td>{{block.total.practicalLessons}}</td>
-                            <td>{{block.total.specialLessons}}</td>
-                            <td>{{block.total.courseWorks}}</td>
-                            <td>{{block.total.conferences}}</td>
-                            <td>{{block.total.practices}}</td>
-                            <td>{{block.total.tests}}</td>
-                            <td>{{block.total.credit}}</td>
-                            <td>{{block.total.selfTraningHours}}</td>
-                            <td>{{block.total.examHours}}</td>
+                            <th colspan="2">Итого за цикл</th>
+                            <th>{{block.total.bFertileUnits}}</th>
+                            <th>{{block.total.vFertileUnits}}</th>
+                            <th>{{block.total.totalHours}}</th>
+                            <th>{{block.total.hoursWithTeacher}}</th>
+                            <th>{{block.total.fertileUnits}}</th>
+                            <th>{{block.total.totalHours}}</th>
+                            <th>{{block.total.undefiningParameter}}</th>
+                            <th>{{block.total.lectures}}</th>
+                            <th>{{block.total.seminars}}</th>
+                            <th>{{block.total.groupExercises}}</th>
+                            <th>{{block.total.groupLessons}}</th>
+                            <th>{{block.total.laboratoryWorks}}</th>
+                            <th>{{block.total.practicalLessons}}</th>
+                            <th>{{block.total.specialLessons}}</th>
+                            <th>{{block.total.courseWorks}}</th>
+                            <th>{{block.total.conferences}}</th>
+                            <th>{{block.total.practices}}</th>
+                            <th>{{block.total.tests}}</th>
+                            <th>{{block.total.credit}}</th>
+                            <th>{{block.total.selfTraningHours}}</th>
+                            <th>{{block.total.examHours}}</th>
 
 
-                            <td>{{block.total.y1s1i}}</td>
-                            <td>{{block.total.y1s1t}}</td>
-                            <td>{{block.total.y1s1s}}</td>
-                            <td>{{block.total.y1s2i}}</td>
-                            <td>{{block.total.y1s2t}}</td>
-                            <td>{{block.total.y1s2s}}</td>
+                            <th>{{block.total.y1s1i}}</th>
+                            <th>{{block.total.y1s1t}}</th>
+                            <th>{{block.total.y1s1s}}</th>
+                            <th>{{block.total.y1s2i}}</th>
+                            <th>{{block.total.y1s2t}}</th>
+                            <th>{{block.total.y1s2s}}</th>
 
-                            <td>{{block.total.y2s1i}}</td>
-                            <td>{{block.total.y2s1t}}</td>
-                            <td>{{block.total.y2s1s}}</td>
-                            <td>{{block.total.y2s2i}}</td>
-                            <td>{{block.total.y2s2t}}</td>
-                            <td>{{block.total.y2s2s}}</td>
+                            <th>{{block.total.y2s1i}}</th>
+                            <th>{{block.total.y2s1t}}</th>
+                            <th>{{block.total.y2s1s}}</th>
+                            <th>{{block.total.y2s2i}}</th>
+                            <th>{{block.total.y2s2t}}</th>
+                            <th>{{block.total.y2s2s}}</th>
 
-                            <td>{{block.total.y3s1i}}</td>
-                            <td>{{block.total.y3s1t}}</td>
-                            <td>{{block.total.y3s1s}}</td>
-                            <td>{{block.total.y3s2i}}</td>
-                            <td>{{block.total.y3s2t}}</td>
-                            <td>{{block.total.y3s2s}}</td>
+                            <th>{{block.total.y3s1i}}</th>
+                            <th>{{block.total.y3s1t}}</th>
+                            <th>{{block.total.y3s1s}}</th>
+                            <th>{{block.total.y3s2i}}</th>
+                            <th>{{block.total.y3s2t}}</th>
+                            <th>{{block.total.y3s2s}}</th>
 
-                            <td>{{block.total.y4s1i}}</td>
-                            <td>{{block.total.y4s1t}}</td>
-                            <td>{{block.total.y4s1s}}</td>
-                            <td>{{block.total.y4s2i}}</td>
-                            <td>{{block.total.y4s2t}}</td>
-                            <td>{{block.total.y4s2s}}</td>
+                            <th>{{block.total.y4s1i}}</th>
+                            <th>{{block.total.y4s1t}}</th>
+                            <th>{{block.total.y4s1s}}</th>
+                            <th>{{block.total.y4s2i}}</th>
+                            <th>{{block.total.y4s2t}}</th>
+                            <th>{{block.total.y4s2s}}</th>
 
-                            <td>{{block.total.y5s1i}}</td>
-                            <td>{{block.total.y5s1t}}</td>
-                            <td>{{block.total.y5s1s}}</td>
-                            <td>{{block.total.y5s2i}}</td>
-                            <td>{{block.total.y5s2t}}</td>
-                            <td>{{block.total.y5s2s}}</td>
+                            <th>{{block.total.y5s1i}}</th>
+                            <th>{{block.total.y5s1t}}</th>
+                            <th>{{block.total.y5s1s}}</th>
+                            <th>{{block.total.y5s2i}}</th>
+                            <th>{{block.total.y5s2t}}</th>
+                            <th>{{block.total.y5s2s}}</th>
 
 
-                            <td>{{block.total.examControl}}</td>
-                            <td>{{block.total.gradedCreditControl}}</td>
-                            <td>{{block.total.passWithoutAssessmentControl}}</td>
-                            <td>{{block.total.courseWorkControl}}</td>
+                            <th>{{block.total.examControl}}</th>
+                            <th>{{block.total.gradedCreditControl}}</th>
+                            <th>{{block.total.passWithoutAssessmentControl}}</th>
+                            <th>{{block.total.courseWorkControl}}</th>
                         </tr>
                     </template>
+                    <tr>
+                        <th colspan="2">Итого за специальность</th>
+                        <th>{{total.bFertileUnits}}</th>
+                        <th>{{total.vFertileUnits}}</th>
+                        <th>{{total.totalHours}}</th>
+                        <th>{{total.hoursWithTeacher}}</th>
+                        <th>{{total.fertileUnits}}</th>
+                        <th>{{total.totalHours}}</th>
+                        <th>{{total.undefiningParameter}}</th>
+                        <th>{{total.lectures}}</th>
+                        <th>{{total.seminars}}</th>
+                        <th>{{total.groupExercises}}</th>
+                        <th>{{total.groupLessons}}</th>
+                        <th>{{total.laboratoryWorks}}</th>
+                        <th>{{total.practicalLessons}}</th>
+                        <th>{{total.specialLessons}}</th>
+                        <th>{{total.courseWorks}}</th>
+                        <th>{{total.conferences}}</th>
+                        <th>{{total.practices}}</th>
+                        <th>{{total.tests}}</th>
+                        <th>{{total.credit}}</th>
+                        <th>{{total.selfTraningHours}}</th>
+                        <th>{{total.examHours}}</th>
+
+
+                        <th>{{total.y1s1i}}</th>
+                        <th>{{total.y1s1t}}</th>
+                        <th>{{total.y1s1s}}</th>
+                        <th>{{total.y1s2i}}</th>
+                        <th>{{total.y1s2t}}</th>
+                        <th>{{total.y1s2s}}</th>
+
+                        <th>{{total.y2s1i}}</th>
+                        <th>{{total.y2s1t}}</th>
+                        <th>{{total.y2s1s}}</th>
+                        <th>{{total.y2s2i}}</th>
+                        <th>{{total.y2s2t}}</th>
+                        <th>{{total.y2s2s}}</th>
+
+                        <th>{{total.y3s1i}}</th>
+                        <th>{{total.y3s1t}}</th>
+                        <th>{{total.y3s1s}}</th>
+                        <th>{{total.y3s2i}}</th>
+                        <th>{{total.y3s2t}}</th>
+                        <th>{{total.y3s2s}}</th>
+
+                        <th>{{total.y4s1i}}</th>
+                        <th>{{total.y4s1t}}</th>
+                        <th>{{total.y4s1s}}</th>
+                        <th>{{total.y4s2i}}</th>
+                        <th>{{total.y4s2t}}</th>
+                        <th>{{total.y4s2s}}</th>
+
+                        <th>{{total.y5s1i}}</th>
+                        <th>{{total.y5s1t}}</th>
+                        <th>{{total.y5s1s}}</th>
+                        <th>{{total.y5s2i}}</th>
+                        <th>{{total.y5s2t}}</th>
+                        <th>{{total.y5s2s}}</th>
+
+
+                        <th>{{total.examControl}}</th>
+                        <th>{{total.gradedCreditControl}}</th>
+                        <th>{{total.passWithoutAssessmentControl}}</th>
+                        <th>{{total.courseWorkControl}}</th>
+                    </tr>
                     </tbody>
                 </table>
             </div>
