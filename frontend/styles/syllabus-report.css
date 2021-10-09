@@ -17,6 +17,7 @@
 }
 
 .border {
-    border: black solid 1px;
+    border: solid 1px;
     border-radius: 2px;
+    margin: 1px;
 }

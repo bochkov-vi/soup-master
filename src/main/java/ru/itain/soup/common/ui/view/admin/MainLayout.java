@@ -132,8 +132,7 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
 	}
 
 	protected void navigate(Class<? extends Component> view) {
-		getUI().ifPresent(ui ->
-				ui.navigate(view));
+		getUI().ifPresent(ui -> ui.navigate(view));
 	}
 
 	@Override

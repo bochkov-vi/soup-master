@@ -3,16 +3,21 @@ package ru.itain.soup.syllabus.ui.speciality;
 import com.google.common.collect.Lists;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.component.SoupElementEditDialog;
@@ -25,7 +30,8 @@ import ru.itain.soup.tool.umm_editor.dto.umm.Discipline;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -33,13 +39,32 @@ import java.util.stream.StreamSupport;
 @Secured("ROLE_TUTOR")
 @PageTitle("СОУП - Преподаватель")
 @Route(value = "tutor/syllabus", layout = MainLayout.class)
+@CssImport(value = "./styles/syllabus-report.css")
 public class SpecialityListView extends CommonView {
 
-    protected Map<Long, Tab> navigationTargetToTab = new HashMap<>();
+    // protected Map<Long, Tab> navigationTargetToTab = new HashMap<>();
     protected DisciplineRepository disciplineRepository;
     protected SpecialityRepository specialityRepository;
     protected SyllabusCategoryRepository syllabusCategoryRepository;
     protected Tabs specialityList;
+
+    @Getter
+    @Setter
+    boolean year1;
+    @Getter
+    @Setter
+    boolean year2;
+    @Getter
+    @Setter
+    boolean year3;
+    @Getter
+    @Setter
+    boolean year4;
+    @Getter
+    @Setter
+    boolean year5;
+
+
     private final Button btnEditSpeciality = new Button("+/-Специальность");
 
     public SpecialityListView(DisciplineRepository disciplineRepository, SpecialityRepository specialityRepository, SyllabusCategoryRepository syllabusCategoryRepository) {
@@ -64,14 +89,56 @@ public class SpecialityListView extends CommonView {
         left.add(dicLabel);
     }
 
+    Binder<SpecialityListView> filterBinder = new Binder<>(SpecialityListView.class);
+
+    public void doFilter() {
+
+    }
+
     private void createFilterPanel() {
+        FormLayout filter = new FormLayout();
+        filter.setResponsiveSteps(
+                new FormLayout.ResponsiveStep("1px", 2),
+                new FormLayout.ResponsiveStep("1024px", 3));
+        left.add(filter);
+        Checkbox checkbox = new Checkbox();
+        filterBinder.forField(checkbox).bind(SpecialityListView::isYear1, SpecialityListView::setYear1);
+        filter.addFormItem(checkbox, "1 курс");
+
+        checkbox = new Checkbox();
+        filterBinder.forField(checkbox).bind(SpecialityListView::isYear2, SpecialityListView::setYear2);
+        filter.addFormItem(checkbox, "2 курс");
+
+        checkbox = new Checkbox();
+        filterBinder.forField(checkbox).bind(SpecialityListView::isYear3, SpecialityListView::setYear3);
+        filter.addFormItem(checkbox, "3 курс");
+
+        checkbox = new Checkbox();
+        filterBinder.forField(checkbox).bind(SpecialityListView::isYear4, SpecialityListView::setYear4);
+        filter.addFormItem(checkbox, "4 курс");
+
+        checkbox = new Checkbox();
+        filterBinder.forField(checkbox).bind(SpecialityListView::isYear5, SpecialityListView::setYear5);
+        filter.addFormItem(checkbox, "5 курс");
+
+        HorizontalLayout buttons = new HorizontalLayout();
+        filterBinder.setBean(SpecialityListView.this);
+        Button btnFilter = new Button("ФИЛЬТРОВАТЬ");
+        //btnFilter.setWidth("3rem");
+        btnFilter.addClickListener((e) -> {
+            doFilter();
+        });
+        buttons.add(btnFilter);
+        filter.add(buttons,5);
+        filter.setClassName("border");
+
         /*HorizontalLayout comboboxLayout = new HorizontalLayout();
         comboboxLayout.getStyle().set("margin-left", "20px");
         comboboxLayout.getStyle().set("margin-right", "20px");
         comboboxLayout.getStyle().set("margin-bottom", "10px");
         comboboxLayout.getStyle().set("border-bottom", "1px solid var(--soup-dark-grey)");
         comboboxLayout.setAlignItems(Alignment.BASELINE);
-        specialityComboBox = new ComboBox<>();
+
         specialityComboBox.setItemLabelGenerator(Speciality::asString);
         specialityComboBox.setWidthFull();
         specialityComboBox.setClassName("soup-combobox");
@@ -86,7 +153,7 @@ public class SpecialityListView extends CommonView {
         comboboxLayout.getStyle().set("margin-bottom", "10px");
         comboboxLayout.getStyle().set("border-bottom", "1px solid var(--soup-dark-grey)");
         comboboxLayout.setAlignItems(Alignment.BASELINE);
-        disciplineComboBox = new ComboBox<>();
+
         disciplineComboBox.setItemLabelGenerator(Discipline::asString);
         disciplineComboBox.setWidthFull();
         disciplineComboBox.setClassName("soup-combobox");
@@ -108,19 +175,22 @@ public class SpecialityListView extends CommonView {
         left.add(createEditButtons());
     }
 
-    private void updateDisciplines() {
-        List<Discipline> disciplines = new ArrayList<>(disciplineRepository.findAll());
-        ComboBox.ItemFilter<Discipline> filter = (element, filterString) -> element
-                .getName().toLowerCase().contains(filterString.toLowerCase());
+//    private void updateDisciplines() {
+//        List<Discipline> disciplines = new ArrayList<>(disciplineRepository.findAll());
+//        ComboBox.ItemFilter<Discipline> filter = (element, filterString) -> element
+//                .getName().toLowerCase().contains(filterString.toLowerCase());
+//        disciplineComboBox.setItems(filter, disciplines);
+//
+//    }
 
-    }
-
-    private void updateSpecialities() {
+    /*private void updateSpecialities() {
         List<Speciality> specialities = Lists.newArrayList(specialityRepository.findAll());
         ComboBox.ItemFilter<Speciality> filter = (element, filterString) -> element
                 .getName().toLowerCase().contains(filterString.toLowerCase());
 
-    }
+        specialityComboBox.setItems(filter, specialities);
+
+    }*/
 
     protected RouterLink createSpecialityLink(Speciality speciality) {
         return new RouterLink(speciality.asString(), SyllabusListView.class, speciality.getId());
@@ -138,7 +208,6 @@ public class SpecialityListView extends CommonView {
                     RouterLink routerLink = createSpecialityLink(speciality);
                     Tab tab = new Tab(routerLink);
                     specialityList.add(tab);
-                    navigationTargetToTab.put(id, tab);
                 });
         getUI().ifPresent(ui -> {
             Long parameter = firstInList.get();
@@ -147,6 +216,7 @@ public class SpecialityListView extends CommonView {
             }
         });
     }
+
 
     private Component createEditButtons() {
         HorizontalLayout mainLayout = new HorizontalLayout();
@@ -182,7 +252,6 @@ public class SpecialityListView extends CommonView {
         new SoupElementEditDialog<Speciality>(Lists.newArrayList(specialityRepository.findAll()), "Редактирование специальностей") {
             @Override
             protected void updateElementList() {
-                updateSpecialities();
                 fillTabs();
                 specialityListUpdated();
             }
