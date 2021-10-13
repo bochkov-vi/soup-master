@@ -63,7 +63,7 @@ public class SpecialityListView extends CommonView {
     @Getter
     @Setter
     boolean year5;
-
+    protected FormLayout filter = new FormLayout();
 
     private final Button btnEditSpeciality = new Button("+/-Специальность");
 
@@ -96,7 +96,7 @@ public class SpecialityListView extends CommonView {
     }
 
     private void createFilterPanel() {
-        FormLayout filter = new FormLayout();
+        filter.setVisible(false);
         filter.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("1px", 2),
                 new FormLayout.ResponsiveStep("1024px", 3));
@@ -129,7 +129,7 @@ public class SpecialityListView extends CommonView {
             doFilter();
         });
         buttons.add(btnFilter);
-        filter.add(buttons,5);
+        filter.add(buttons, 5);
         filter.setClassName("border");
 
         /*HorizontalLayout comboboxLayout = new HorizontalLayout();

@@ -110,4 +110,18 @@ public class SyllabusEditView extends SpecialityListView implements HasUrlParame
         Syllabus syllabus = syllabusRepository.findById(parameter).orElse(null);
         this.form.setEntity(syllabus);
     }
+    @Override
+    public void disciplineListUpdated() {
+        form.disciplineListUpdated();
+    }
+
+    @Override
+    public void syllabusCategoryListUpdated() {
+        form.syllabusCategoryListUpdated();
+    }
+
+    @Override
+    public void specialityListUpdated() {
+        form.specialityListUpdated();
+    }
 }

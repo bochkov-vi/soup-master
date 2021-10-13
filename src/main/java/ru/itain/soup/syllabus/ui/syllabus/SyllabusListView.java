@@ -10,6 +10,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
@@ -21,6 +22,7 @@ import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +51,7 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
     }
 
     private void init() {
-
+        filter.setVisible(true);
         grid = new SyllabusView();
         setWidth("100%");
 
@@ -73,15 +75,89 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         fillTable();
     }
 
-    private void fillTable() {
-        List<Syllabus> syllabusList = syllabusRepository.findAll((r, q, b) -> {
+    @Override
+    public void doFilter() {
+        super.doFilter();
+        fillTable();
+    }
+
+    Specification<Syllabus> specification() {
+        Specification<Syllabus> s = ((r, q, b) -> {
             if (this.speciality != null && this.speciality.getId() > 0) {
                 return b.equal(r.get("speciality"), this.speciality);
             }
             return null;
         });
+        if (isYear1()) {
+            s = s.and((r, q, b) -> {
+                return b.or
+                        (b.greaterThan(
+                                        r.get("studyYear1").get("intensityCycle1"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear1").get("trainingHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear1").get("selfStudyHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear1").get("intensityCycle2"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear1").get("trainingHoursCycle2"), 0),
+                                b.greaterThan(r.get("studyYear1").get("selfStudyHoursCycle2"), 0)
+                        );
+            });
+        }
+        if (isYear2()) {
+            s = s.and((r, q, b) -> {
+                return b.or
+                        (b.greaterThan(
+                                        r.get("studyYear2").get("intensityCycle1"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear2").get("trainingHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear2").get("selfStudyHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear2").get("intensityCycle2"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear2").get("trainingHoursCycle2"), 0),
+                                b.greaterThan(r.get("studyYear2").get("selfStudyHoursCycle2"), 0)
+                        );
+            });
+        }
+        if (isYear3()) {
+            s = s.and((r, q, b) -> {
+                return b.or
+                        (b.greaterThan(
+                                        r.get("studyYear3").get("intensityCycle1"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear3").get("trainingHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear3").get("selfStudyHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear3").get("intensityCycle2"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear3").get("trainingHoursCycle2"), 0),
+                                b.greaterThan(r.get("studyYear3").get("selfStudyHoursCycle2"), 0)
+                        );
+            });
+        }
+        if (isYear4()) {
+            s = s.and((r, q, b) -> {
+                return b.or
+                        (b.greaterThan(
+                                        r.get("studyYear4").get("intensityCycle1"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear4").get("trainingHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear4").get("selfStudyHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear4").get("intensityCycle2"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear4").get("trainingHoursCycle2"), 0),
+                                b.greaterThan(r.get("studyYear4").get("selfStudyHoursCycle2"), 0)
+                        );
+            });
+        }
+        if (isYear5()) {
+            s = s.and((r, q, b) -> {
+                return b.or
+                        (b.greaterThan(
+                                        r.get("studyYear5").get("intensityCycle1"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear5").get("trainingHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear5").get("selfStudyHoursCycle1"), 0),
+                                b.greaterThan(r.get("studyYear5").get("intensityCycle2"), new BigDecimal(0)),
+                                b.greaterThan(r.get("studyYear5").get("trainingHoursCycle2"), 0),
+                                b.greaterThan(r.get("studyYear5").get("selfStudyHoursCycle2"), 0)
+                        );
+            });
+        }
+        return s;
+    }
 
-
+    private void fillTable() {
+        List<Syllabus> syllabusList = syllabusRepository.findAll(specification());
         Multimap<String, Syllabus> data = Multimaps.index(syllabusList, r -> Optional.ofNullable(r.getCategory()).map(SyllabusCategory::asString).orElse("не определено"));
         List<SyllabusBlock> blocks = Lists.newArrayList();
 
