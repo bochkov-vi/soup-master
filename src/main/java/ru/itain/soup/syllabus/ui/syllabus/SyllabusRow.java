@@ -69,7 +69,7 @@ public class SyllabusRow {
     Double passWithoutAssessmentControl;
     Double courseWorkControl;
 
-    static SyllabusRow total(List<SyllabusRow>... data) {
+    public static SyllabusRow total(List<SyllabusRow>... data) {
         SyllabusRow row = new SyllabusRow();
         List<SyllabusRow> rows = Stream.of(data).flatMap(Collection::stream).collect(Collectors.toList());
         row.discipline = ("Итого");
@@ -133,7 +133,7 @@ public class SyllabusRow {
         return row;
     }
 
-    SyllabusRow(Syllabus syllabus) {
+   public SyllabusRow(Syllabus syllabus) {
         Optional<Syllabus> o = Optional.ofNullable(syllabus);
         this.id = new Long(syllabus.getId()).intValue();
         this.index = syllabus.getIndex();
@@ -147,7 +147,7 @@ public class SyllabusRow {
         this.fertileHours = fertileUnits * 36;
         this.totalHours = this.fertileHours;
         this.undefiningParameter = o.map(Syllabus::getUndefiningParameter).orElse(null);
-        if (bFertileUnits != null) {
+        if (fertileHours != null) {
             hoursWithTeacher = this.fertileHours - this.fertileHours / 3 - undefiningParameter * 18;
         }
         this.lectures = o.map(Syllabus::getLectures).filter(v -> v > 0).orElse(null);

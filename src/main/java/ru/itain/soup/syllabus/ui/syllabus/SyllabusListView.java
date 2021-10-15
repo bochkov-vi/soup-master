@@ -4,12 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.server.StreamResourceWriter;
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
@@ -22,6 +23,8 @@ import ru.itain.soup.syllabus.ui.speciality.SpecialityListView;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Comparator;
@@ -36,7 +39,7 @@ import static ru.itain.soup.common.ui.view.admin.CommonView.PAGE_TITLE;
 @PageTitle(PAGE_TITLE)
 public class SyllabusListView extends SpecialityListView implements HasUrlParameter<Long> {
     protected Button btnNew = new Button("Добавить");
-    //protected Button btnReport = new Button("Отчет");
+    protected Button btnExcel = new Button("Excel");
     protected SyllabusRepository syllabusRepository;
     private Speciality speciality;
     private SyllabusView grid;
@@ -48,7 +51,10 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         btnNew.addClickListener(e -> {
             getUI().ifPresent(ui -> ui.navigate(SyllabusAddView.class, Optional.ofNullable(speciality).map(Speciality::getId).orElse(0L)));
         });
+
+
     }
+
 
     private void init() {
         filter.setVisible(true);
@@ -67,6 +73,18 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         buttons.getStyle().set("padding-right", "20px");
         //btnReport.setEnabled(true);
         btnNew.setEnabled(true);
+
+        Anchor download = new Anchor(new StreamResource("учебный_план.xlsx", new StreamResourceWriter() {
+            @Override
+            public void accept(OutputStream stream, VaadinSession session) throws IOException {
+                XlsxReport report = new XlsxReport(createData());
+                report.write(stream);
+            }
+        }), "");
+        download.getElement().setAttribute("download", true);
+
+        download.add(btnExcel);
+        buttons.add(download);
     }
 
     @Override
@@ -156,7 +174,7 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
         return s;
     }
 
-    private void fillTable() {
+    private List<SyllabusBlock> createData() {
         List<Syllabus> syllabusList = syllabusRepository.findAll(specification());
         Multimap<String, Syllabus> data = Multimaps.index(syllabusList, r -> Optional.ofNullable(r.getCategory()).map(SyllabusCategory::asString).orElse("не определено"));
         List<SyllabusBlock> blocks = Lists.newArrayList();
@@ -188,8 +206,16 @@ public class SyllabusListView extends SpecialityListView implements HasUrlParame
                 blocks.add(block);
             }
         }
+        return blocks;
+    }
+
+    private void fillTable() {
+        List<SyllabusBlock> blocks = createData();
+        btnExcel.setEnabled(!blocks.isEmpty());
         grid.setBlocks(blocks);
         grid.setTotal(SyllabusRow.total(blocks.stream().flatMap(b -> b.getArticles().stream()).flatMap(a -> a.getRows().stream()).collect(Collectors.toList())));
     }
 
+    public void beforeEnter(BeforeEnterEvent event) {
+    }
 }

@@ -13,9 +13,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.router.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.access.annotation.Secured;
@@ -32,6 +30,7 @@ import ru.itain.soup.tool.umm_editor.repository.umm.DisciplineRepository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,7 +39,7 @@ import java.util.stream.StreamSupport;
 @PageTitle("СОУП - Преподаватель")
 @Route(value = "tutor/syllabus", layout = MainLayout.class)
 @CssImport(value = "./styles/syllabus-report.css")
-public class SpecialityListView extends CommonView {
+public class SpecialityListView extends CommonView implements BeforeEnterObserver {
 
     // protected Map<Long, Tab> navigationTargetToTab = new HashMap<>();
     protected DisciplineRepository disciplineRepository;
@@ -94,6 +93,7 @@ public class SpecialityListView extends CommonView {
     public void doFilter() {
 
     }
+
 
     private void createFilterPanel() {
         filter.setVisible(false);
@@ -342,5 +342,16 @@ public class SpecialityListView extends CommonView {
                 return new SyllabusCategory("Новый раздел");
             }
         };
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        Optional<Speciality> firstInList = specialityRepository.findAll().stream().findFirst();
+        getUI().ifPresent(ui -> {
+            Long parameter = firstInList.map(Speciality::getId).get();
+            if (parameter != null) {
+                ui.navigate(SyllabusListView.class, parameter);
+            }
+        });
     }
 }

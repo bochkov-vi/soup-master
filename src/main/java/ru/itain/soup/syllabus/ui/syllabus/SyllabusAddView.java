@@ -3,10 +3,7 @@ package ru.itain.soup.syllabus.ui.syllabus;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import org.springframework.security.access.annotation.Secured;
 import ru.itain.soup.common.repository.users.SpecialityRepository;
 import ru.itain.soup.common.ui.view.tutor.MainLayout;
@@ -111,5 +108,6 @@ public class SyllabusAddView extends SpecialityListView implements HasUrlParamet
             this.speciality = s;
         });
 
+    } public void beforeEnter(BeforeEnterEvent event) {
     }
 }
