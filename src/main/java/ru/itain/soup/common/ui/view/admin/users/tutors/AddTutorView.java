@@ -149,7 +149,7 @@ public class AddTutorView extends TutorView {
         department.setItemLabelGenerator(VisualEntity::asString);
         List<Department> departments = Lists.newArrayList(departmentRepository.findAll());
         department.setItems(departments);
-
+        department.setClearButtonVisible(true);
         Label right = new Label("ДОСТУПНЫЕ ПРАВА");
 
         layoutWithBinder.addFormItem(lastName, "ФАМИЛИЯ");

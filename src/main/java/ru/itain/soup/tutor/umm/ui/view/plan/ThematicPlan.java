@@ -367,6 +367,7 @@ public class ThematicPlan extends CommonView {
 		return tutorRepository.findByUserUsername(authentication.getName());
 	}
 
+
 	private void createFromTemplate() {
 		VisualEntity selectedItem = ummTreeCreator.getSelectedItem();
 		Plan plan;
