@@ -16,6 +16,7 @@ import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
 import ru.itain.soup.common.dto.VisualEntity;
+import ru.itain.soup.common.repository.users.TutorRepository;
 import ru.itain.soup.tool.umm_editor.dto.umm.Speciality;
 import ru.itain.soup.common.dto.users.StudentGroup;
 import ru.itain.soup.common.dto.users.Tutor;
@@ -66,6 +67,7 @@ import static ru.itain.soup.common.ui.component.MaterialDiv.TEST_CODE;
 @Component
 @UIScope
 public class UmmInfoLayout extends VerticalLayout implements UmmChangedNotifier {
+	private final TutorRepository tutorRepository;
 	private final StudentGroupRepository studentGroupRepository;
 	private final TestRepository testRepository;
 	private final PresentationRepository presentationRepository;
@@ -131,8 +133,10 @@ public class UmmInfoLayout extends VerticalLayout implements UmmChangedNotifier 
 			TopicRepository topicRepository,
 			PlanRepository planRepository,
 			SpecialityRepository specialityRepository,
-			LessonTypeRepository lessonTypeRepository
+			LessonTypeRepository lessonTypeRepository,
+			TutorRepository tutorRepository
 	) {
+		this.tutorRepository = tutorRepository;
 		this.studentGroupRepository = studentGroupRepository;
 		this.testRepository = testRepository;
 		this.presentationRepository = presentationRepository;

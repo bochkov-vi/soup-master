@@ -1,5 +1,6 @@
 package ru.itain.soup.common.ui.component;
 
+import com.google.common.base.Strings;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -25,6 +26,7 @@ import ru.itain.soup.syllabus.dto.entity.Department;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @JsModule("./src/soup-vaadin-dialog-styles.js")
@@ -59,7 +61,7 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
 
     protected void init() {
         getElement().setAttribute("class", "soup-add-theme-dialog");
-        setWidth("40vw");
+        setWidth("70vw");
 
         gridItems = elements
                 .stream()
@@ -182,7 +184,20 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
                 }))
                 .setSortable(false)
                 .setHeader("Имя");
-
+        grid.addColumn(new ComponentRenderer<>(item -> {
+                    Optional<String> labelText = Optional.ofNullable(item.getDepartment()).map(Department::asString).filter(name -> !Strings.isNullOrEmpty(name));
+                    if (!labelText.isPresent()) {
+                        labelText = Optional.ofNullable(item.getElement()).map(IWithDepartment::getDepartment).map(Department::asString).filter(name -> !Strings.isNullOrEmpty(name));
+                    }
+                    Label result = new Label(labelText.map(name -> "Кафедра " + name).orElse(""));
+                    if (item.isDelete()) {
+                        result.getStyle().set("text-decoration", "line-through");
+                        result.getStyle().set("color", "red");
+                    }
+                    return result;
+                }))
+                .setSortable(false)
+                .setHeader("Кафедра");
         grid.addColumn(new ComponentRenderer<>(item -> {
             Button deleteBtn = new Button(VaadinIcon.FILE_REMOVE.create());
             deleteBtn.getElement().setAttribute("tooltipId", "button-tooltip");

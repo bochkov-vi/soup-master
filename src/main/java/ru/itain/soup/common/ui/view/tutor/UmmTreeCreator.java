@@ -182,7 +182,7 @@ public class UmmTreeCreator {
     }
 
     private void updateDisciplines() {
-        disciplineItemList = disciplineRepository.findAll().stream()
+        disciplineItemList = disciplineRepository.findAll(tutorRepository.getCurrentDepartment()).stream()
                 .map(TreeItem::new)
                 .collect(Collectors.toList());
     }

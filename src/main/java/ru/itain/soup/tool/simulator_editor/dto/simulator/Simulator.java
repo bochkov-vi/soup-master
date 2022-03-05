@@ -1,18 +1,17 @@
 package ru.itain.soup.tool.simulator_editor.dto.simulator;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
+import ru.itain.soup.common.dto.IWithDepartment;
 import ru.itain.soup.common.dto.VisualEntity;
+import ru.itain.soup.syllabus.dto.entity.Department;
 import ru.itain.soup.tool.im_editor.dto.interactive_material.InteractiveMaterial;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Base64;
 
@@ -21,7 +20,10 @@ import java.util.Base64;
  */
 @Entity
 @Table(schema = "simulator")
-public class Simulator implements VisualEntity, InteractiveMaterial {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class Simulator implements VisualEntity, InteractiveMaterial, IWithDepartment<Simulator> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id = 0;
@@ -39,6 +41,12 @@ public class Simulator implements VisualEntity, InteractiveMaterial {
 	@Type(type = "org.hibernate.type.TextType")
 	private String photo;
 	private boolean hasRoles;
+
+	@ManyToOne
+	@JoinTable(name = "simulator_department", schema = "simulator",
+			joinColumns = @JoinColumn(name = "simulator_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "department_id", referencedColumnName = "id"))
+	private Department department;
 
 	public Simulator() {
 	}
@@ -70,14 +78,6 @@ public class Simulator implements VisualEntity, InteractiveMaterial {
 		this.hasRoles = hasRoles;
 	}
 
-	@Override
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getCode() {
 		if (template != null) {
