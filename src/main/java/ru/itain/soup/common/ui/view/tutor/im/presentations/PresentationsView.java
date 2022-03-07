@@ -432,7 +432,7 @@ public class PresentationsView extends InteractiveMaterialsView implements Befor
         // обновляем данные
         treeData.clear();
         allTopics = materialTopicRepository.findAll(tutorRepository.getCurrentDepartment());
-        List<Presentation> presentationList = presentationRepository.findAll();
+        List<Presentation> presentationList = presentationRepository.findAll(tutorRepository.getCurrentDepartment());
         presentationList.sort(Comparator.comparingLong(Presentation::getId));
         Map<MaterialTopic, List<Presentation>> map = new HashMap<>();
         allTopics.forEach(it -> map.put(it, new ArrayList<>()));

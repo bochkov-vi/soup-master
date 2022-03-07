@@ -802,7 +802,7 @@ public class ArticleMainView extends CommonView {
 
     private void openContentEditor(Article article) {
         center.setMaxWidth("100vw");
-        PdfEditor pdfEditor = new PdfEditor(PdfEditor.Mode.ARTICLE, articleRepository, articleBlockService);
+        PdfEditor pdfEditor = new PdfEditor(PdfEditor.Mode.ARTICLE, articleRepository, articleBlockService,tutorRepository);
         pdfEditor.setId("soup-tutor-content-edit-pdf-editor");
         Button saveResult = new Button("Сохранить", e -> {
             pdfEditor.save(result -> {

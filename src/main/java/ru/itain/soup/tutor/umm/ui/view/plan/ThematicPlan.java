@@ -747,7 +747,8 @@ public class ThematicPlan extends CommonView {
         PdfEditor pdfEditor = new PdfEditor(
                 PdfEditor.Mode.LESSON,
                 articleRepository,
-                articleBlockService
+                articleBlockService,
+                tutorRepository
         );
         pdfEditor.setId("soup-tutor-content-edit-pdf-editor");
         boolean isNew = lesson.getId() == 0;

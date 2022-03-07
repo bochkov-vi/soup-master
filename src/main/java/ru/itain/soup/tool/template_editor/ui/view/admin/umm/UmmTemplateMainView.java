@@ -20,6 +20,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
+import ru.itain.soup.common.repository.users.TutorRepository;
 import ru.itain.soup.common.service.PdfService;
 import ru.itain.soup.common.ui.component.PdfEditor;
 import ru.itain.soup.common.ui.component.SoupBaseDialog;
@@ -58,13 +59,16 @@ public class UmmTemplateMainView extends CommonView {
 	private Span contentSpan;
 	private HorizontalLayout buttons;
 	private HorizontalLayout contentDiv;
+	private final TutorRepository tutorRepository;
 
 	public UmmTemplateMainView(
 			LessonTemplateRepository lessonTemplateRepository,
 			ArticleRepository articleRepository,
 			ArticleBlockService articleBlockService,
-			PdfService pdfService
+			PdfService pdfService,
+			TutorRepository tutorRepository
 	) {
+		this.tutorRepository=tutorRepository;
 		this.lessonTemplateRepository = lessonTemplateRepository;
 		this.articleRepository = articleRepository;
 		this.articleBlockService = articleBlockService;
@@ -381,7 +385,7 @@ public class UmmTemplateMainView extends CommonView {
 	}
 
 	private void openContentEditor(LessonTemplate lessonTemplate) {
-		PdfEditor pdfEditor = new PdfEditor(PdfEditor.Mode.LESSON_TEMPLATE, articleRepository, articleBlockService);
+		PdfEditor pdfEditor = new PdfEditor(PdfEditor.Mode.LESSON_TEMPLATE, articleRepository, articleBlockService,tutorRepository);
 		pdfEditor.setId("soup-tutor-content-edit-pdf-editor");
 		Button saveResult = new Button(
 				"Сохранить",

@@ -734,7 +734,7 @@ public class UmmMainView extends CommonView {
     private void initEditMode(Lesson lesson) {
         ummInfoEditButtons.setVisible(false);
         hideUmmInfoLayout();
-        PdfEditor pdfEditor = new PdfEditor(PdfEditor.Mode.LESSON, articleRepository, articleBlockService);
+        PdfEditor pdfEditor = new PdfEditor(PdfEditor.Mode.LESSON, articleRepository, articleBlockService,tutorRepository);
         pdfEditor.setId("soup-tutor-content-edit-pdf-editor");
         boolean isNew = lesson.getId() == 0;
         lessonRepository.save(lesson);
