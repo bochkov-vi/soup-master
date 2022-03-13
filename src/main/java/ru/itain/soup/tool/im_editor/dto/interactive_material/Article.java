@@ -28,6 +28,7 @@ public class Article implements VisualEntity, InteractiveMaterial, IWithDepartme
     private long id = 0;
     @NotNull
     private String name;
+
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Article parent;

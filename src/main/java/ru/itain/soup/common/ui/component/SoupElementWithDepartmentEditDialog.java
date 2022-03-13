@@ -32,14 +32,14 @@ import java.util.stream.Collectors;
 @JsModule("./src/soup-vaadin-dialog-styles.js")
 public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartment<T>> extends Dialog {
     public final List<Label> labels;
+    final List<Department> departments;
+    final Department defaultDepartment;
     private final List<T> elements;
-    private boolean hasWarning;
     protected HorizontalLayout addLayout;
     protected Button add;
     protected List<ElementChange<T>> gridItems;
     protected Grid<ElementChange<T>> grid;
-    final List<Department> departments;
-    final Department defaultDepartment;
+    private boolean hasWarning;
 
     public SoupElementWithDepartmentEditDialog(List<T> elements, List<Department> departments, Department defaultDepartment, String... labels) {
         this.labels = Arrays.stream(labels).map(Label::new).collect(Collectors.toList());
@@ -186,9 +186,7 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
                 .setHeader("Имя");
         grid.addColumn(new ComponentRenderer<>(item -> {
                     Optional<String> labelText = Optional.ofNullable(item.getDepartment()).map(Department::asString).filter(name -> !Strings.isNullOrEmpty(name));
-                    if (!labelText.isPresent()) {
-                        labelText = Optional.ofNullable(item.getElement()).map(IWithDepartment::getDepartment).map(Department::asString).filter(name -> !Strings.isNullOrEmpty(name));
-                    }
+
                     Label result = new Label(labelText.map(name -> "Кафедра " + name).orElse(""));
                     if (item.isDelete()) {
                         result.getStyle().set("text-decoration", "line-through");
@@ -241,7 +239,7 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
                 departmentComboBox.setItems(departments);
                 departmentComboBox.setLabel("Кафедра");
                 departmentComboBox.setWidthFull();
-                departmentComboBox.setValue(item.getDepartment() == null ? item.getElement().getDepartment() : null);
+                departmentComboBox.setValue(item.getDepartment() == null ? item.getElement().getDepartment() : item.getDepartment());
                 departmentComboBox.setClearButtonVisible(true);
                 layout.add(departmentComboBox);
 
@@ -307,7 +305,7 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
 
     protected abstract T getNewElement();
 
-    public static class ElementChange<T> {
+    public static class ElementChange<T extends IWithDepartment> {
         private final T element;
         private final boolean isNew;
         private String rename;
@@ -318,6 +316,7 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
 
         public ElementChange(T element, boolean isNew) {
             this.element = element;
+            this.department = element.getDepartment();
             this.isNew = isNew;
         }
 
@@ -349,20 +348,20 @@ public abstract class SoupElementWithDepartmentEditDialog<T extends IWithDepartm
             this.rename = rename;
         }
 
-        public void setDepartment(Department department) {
-            this.department = department;
-        }
-
         public Department getDepartment() {
             return department;
         }
 
-        public void setDepartmentComboBox(ComboBox<Department> departmentComboBox) {
-            this.departmentComboBox = departmentComboBox;
+        public void setDepartment(Department department) {
+            this.department = department;
         }
 
         public ComboBox<Department> getDepartmentComboBox() {
             return departmentComboBox;
+        }
+
+        public void setDepartmentComboBox(ComboBox<Department> departmentComboBox) {
+            this.departmentComboBox = departmentComboBox;
         }
 
         public T getElement() {
